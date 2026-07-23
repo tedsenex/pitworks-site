@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT VEHICLES — HYRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:     #000000;
+    --off-black: #0a0a0a;
+    --panel:     #111111;
+    --border:    #252525;
+    --border-hi: #444444;
+    --grey:      #8a9396;
+    --blue:      #02579a;
+    --blue-hi:   #0377d4;
+    --red:       #ff3b3b;
+    --text:      #ffffff;
+    --muted:     #555555;
+    --font-d: 'Orbitron', monospace;
+    --font-b: 'DM Mono', monospace;
+    --r: 16px;
+    --t: 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  html, body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-b);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 3px,
+      rgba(0,0,0,.055) 3px, rgba(0,0,0,.055) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .wrap {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 44px 40px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp .6s .05s ease forwards;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle at top right, rgba(2,87,154,.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none;
+  }
+  .header-eye {
+    font-family: var(--font-d);
+    font-size: .6rem;
+    color: var(--blue-hi);
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-family: var(--font-d);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    line-height: 1;
+    position: relative; z-index: 1;
+    margin-bottom: 14px;
+  }
+  .page-header h1::before {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0;
+    color: var(--red);
+    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    transform: translateX(-2px);
+    opacity: 0;
+    animation: glitch 7s 2.5s infinite;
+  }
+  @keyframes glitch {
+    0%,93%,100% { opacity:0; transform:translateX(-2px); }
+    94% { opacity:.5; transform:translateX(3px); }
+    96% { opacity:.3; transform:translateX(-4px); }
+  }
+  .page-header p {
+    font-size: .8rem;
+    color: var(--grey);
+    max-width: 520px;
+    position: relative; z-index: 1;
+    letter-spacing: .03em;
+  }
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    position: relative; z-index: 1;
+  }
+  .meta-stat .num {
+    font-family: var(--font-d);
+    font-size: 1.55rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+  .meta-stat .lbl {
+    font-size: .58rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .15em;
+  }
+  .meta-div { width: 1px; background: var(--border); align-self: stretch; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 10px 20px;
+    opacity: 0;
+    animation: fadeUp .6s .18s ease forwards;
+  }
+  .filter-label {
+    font-family: var(--font-d);
+    font-size: .58rem;
+    color: var(--muted);
+    letter-spacing: .2em;
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-family: var(--font-d);
+    font-size: .6rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--t);
+  }
+  .filter-btn .cnt {
+    display: inline-block;
+    background: var(--border);
+    color: var(--muted);
+    font-size: .52rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+    transition: all var(--t);
+  }
+  .filter-btn:hover { color: var(--text); border-color: var(--border-hi); }
+  .filter-btn.active { background: var(--text); color: var(--black); border-color: var(--text); }
+  .filter-btn.active .cnt { background: rgba(0,0,0,.15); color: var(--black); }
+
+  /* ── VEHICLE LIST ── */
+  .vehicle-list { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── VEHICLE CARD ── */
+  .vehicle-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    transition: border-color var(--t), box-shadow var(--t);
+    opacity: 0;
+  }
+  .vehicle-card[data-visible] { animation: fadeUp .5s ease forwards; }
+  .vehicle-card.hidden { display: none; }
+  .vehicle-card:hover { border-color: var(--border-hi); }
+  .vehicle-card.is-open {
+    border-color: var(--border-hi);
+    box-shadow: 0 0 44px rgba(2,87,154,.1);
+  }
+
+  /* ── COVER ── */
+  .vehicle-cover {
+    position: relative;
+    height: 300px;
+    background: var(--off-black);
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+  }
+  .vehicle-cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(2,87,154,.12) 0%, transparent 50%),
+      linear-gradient(225deg, rgba(255,59,59,.06) 0%, transparent 40%),
+      linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+    background-size: auto, auto, 60px 60px, 60px 60px;
+    pointer-events: none;
+  }
+  .vehicle-cover::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 72%;
+    background: linear-gradient(to top, rgba(0,0,0,.92), transparent);
+    pointer-events: none;
+  }
+  .cover-num {
+    position: absolute;
+    top: 50%; right: -8px;
+    transform: translateY(-50%);
+    font-family: var(--font-d);
+    font-size: 9rem;
+    font-weight: 900;
+    color: rgba(255,255,255,.022);
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+  }
+  .cover-category {
+    position: absolute;
+    top: 20px; left: 24px;
+    font-family: var(--font-d);
+    font-size: .55rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    background: rgba(0,0,0,.5);
+    z-index: 3;
+  }
+  .cover-category.cat-show  { color: var(--red); border-color: rgba(255,59,59,.35); }
+  .cover-category.cat-parts { color: var(--blue-hi); border-color: rgba(3,119,212,.35); }
+
+  .vehicle-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 22px 26px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .vehicle-info-left h2 {
+    font-family: var(--font-d);
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .vehicle-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .v-tag {
+    font-family: var(--font-d);
+    font-size: .55rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border-radius: 4px;
+  }
+  .v-tag.show   { background: var(--red); color: #fff; }
+  .v-tag.parts  { background: #111827; color: var(--blue-hi); border: 1px solid rgba(3,119,212,.35); }
+  .v-tag.aero   { background: #242424; color: var(--grey); border: 1px solid #3a3a3a; }
+  .v-tag.stance { background: transparent; color: var(--grey); border: 1px solid #3a3a3a; }
+
+  /* ── EXPAND TOGGLE ── */
+  .expand-toggle {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--border-hi);
+    border-radius: 8px;
+    padding: 9px 15px;
+    cursor: pointer;
+    transition: all var(--t);
+    flex-shrink: 0;
+  }
+  .expand-toggle:hover { background: rgba(255,255,255,.11); }
+  .toggle-label {
+    font-family: var(--font-d);
+    font-size: .58rem;
+    letter-spacing: .15em;
+    color: var(--grey);
+    transition: color var(--t);
+  }
+  .toggle-icon svg {
+    width: 14px; height: 14px;
+    stroke: var(--grey); fill: none;
+    stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+    transition: transform .35s cubic-bezier(.4,0,.2,1), stroke var(--t);
+    display: block;
+  }
+  .vehicle-card.is-open .toggle-icon svg { transform: rotate(180deg); stroke: var(--text); }
+  .vehicle-card.is-open .expand-toggle { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.28); }
+  .vehicle-card.is-open .toggle-label { color: var(--text); }
+
+  /* ── DETAILS PANEL ── */
+  .vehicle-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .7s cubic-bezier(.4,0,.2,1);
+  }
+  .vehicle-card.is-open .vehicle-details { max-height: 4000px; }
+
+  .vehicle-details-content {
+    padding: 26px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, #0d0d0d 0%, var(--off-black) 100%);
+  }
+
+  /* ── GALLERY ── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .gallery-img {
+    aspect-ratio: 16/10;
+    background: #181818;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-d);
+    font-size: .52rem;
+    color: #2e2e2e;
+    letter-spacing: .1em;
+    cursor: pointer;
+    transition: border-color var(--t), transform var(--t);
+  }
+  .gallery-img::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255,255,255,.013) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.013) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .gallery-img:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+
+  /* ── SHOW CAR: 2-col specs ── */
+  .specs-showcar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .spec-box {
+    background: #080808;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color var(--t);
+  }
+  .spec-box:hover { border-color: var(--border-hi); }
+  .spec-box h4 {
+    font-family: var(--font-d);
+    font-size: .72rem;
+    color: var(--grey);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .spec-list li {
+    font-size: .9rem;
+    color: #cccccc;
+    padding-left: 16px;
+    position: relative;
+    letter-spacing: .02em;
+    line-height: 1.6;
+  }
+  .spec-list li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--blue-hi);
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  /* ── DETAIL THUMBS ── */
+  .details-gallery {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+  }
+  .detail-img {
+    aspect-ratio: 4/3;
+    background: #141414;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-d);
+    font-size: .48rem;
+    color: #2e2e2e;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color var(--t);
+  }
+  .detail-img:hover { border-color: var(--border-hi); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    display: none;
+    padding: 60px 20px;
+    text-align: center;
+    font-family: var(--font-d);
+    font-size: .7rem;
+    color: var(--muted);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    background: var(--panel);
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-d);
+    font-size: .55rem;
+    letter-spacing: .14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-top: 4px;
+    opacity: 0;
+    animation: fadeUp .6s .55s ease forwards;
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #1db954;
+    flex-shrink: 0;
+    animation: blink 2.2s infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── RWD ── */
+  @media (max-width: 900px) {
+    .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    .specs-showcar { grid-template-columns: 1fr; }
+    .details-gallery { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 20px 16px 56px; }
+    .page-header { padding: 28px 24px; }
+    .vehicle-cover { height: 240px; }
+    .vehicle-info { flex-direction: column; align-items: flex-start; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .filter-bar { border-radius: var(--r); padding: 14px 16px; }
+    .header-meta { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <p class="header-eye">HYRO MOTORSPORT DIVISION // 2024</p>
+    <h1 data-text="PROJECT VEHICLES">PROJECT VEHICLES</h1>
+    <p>實體化賽博美學的極致展現。瀏覽我們參與研發、改裝與設計的核心車輛作品庫。</p>
+    <div class="header-meta">
+      <div class="meta-stat">
+        <span class="num">4</span>
+        <span class="lbl">Total Builds</span>
+      </div>
+      <div class="meta-div"></div>
+      <div class="meta-stat">
+        <span class="num">3</span>
+        <span class="lbl">Show Cars</span>
+      </div>
+      <div class="meta-div"></div>
+      <div class="meta-stat">
+        <span class="num">1</span>
+        <span class="lbl">Parts Series</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">
+      ALL <span class="cnt">4</span>
+    </button>
+    <button class="filter-btn" data-filter="show-car">
+      SHOW CAR <span class="cnt">3</span>
+    </button>
+    <button class="filter-btn" data-filter="parts">
+      PARTS 零件 <span class="cnt">1</span>
+    </button>
+  </div>
+
+  <!-- VEHICLE LIST -->
+  <div class="vehicle-list">
+
+    <!-- ═══ SHOW CAR 01 ═══ -->
+    <div class="vehicle-card" data-cat="show-car" data-idx="0">
+      <div class="vehicle-cover" role="button" tabindex="0" aria-expanded="false"
+           style="background-image: url('https://i.pinimg.com/1200x/3d/2f/02/3d2f02fbdb6d57474b4e1c1d90cbd250.jpg'); background-size: cover; background-position: center;">
+        <span class="cover-num">01</span>
+        <span class="cover-category cat-show">SHOW CAR</span>
+        <div class="vehicle-info">
+          <div class="vehicle-info-left">
+            <h2>藍色幽靈 // YAMAHA R1</h2>
+            <div class="vehicle-tags">
+              <span class="v-tag show">SHOW CAR</span>
+              <span class="v-tag aero">STREET FIGHTER</span>
+              <span class="v-tag stance">台北製造</span>
+            </div>
+          </div>
+          <div class="expand-toggle">
+            <span class="toggle-label">DETAILS</span>
+            <span class="toggle-icon">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="vehicle-details">
+        <div class="vehicle-details-content">
+
+          <!-- desc strip -->
+          <div style="margin-bottom:20px; padding:16px 18px; background:#0a0a0a; border:1px solid #252525; border-radius:10px; border-left:3px solid #0377d4;">
+            <p style="font-size:.95rem; color:#bbb; letter-spacing:.02em; line-height:1.75;">
+              由台北 <strong style="color:#fff;">Pit Works Design</strong> 的 Ted Lee 打造，以 1998 Yamaha YZF-R1 為基礎，靈感來自經典小精靈遊戲中的藍色幽靈「Inky」。全車以 3D 列印、CNC 加工與碳纖維複合材料為核心，徹底重塑車體美學。
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/69/be/fb/69befbf3f3309183bb3f638342299a0b.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/26/84/35/26843547e24d99d761593441aed517ff.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/33/9c/cf/339ccfdfb3baf08e603700b40f94d156.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+          <div class="specs-showcar">
+            <div class="spec-box">
+              <h4>EXTERIOR // 外觀</h4>
+              <ul class="spec-list">
+                <li>油箱裁切縮短比例，外覆訂製鋼製油箱</li>
+                <li>鑄鋁加油口蓋（仿耐久賽復古造型）</li>
+                <li>透明導流罩：感光環氧樹脂 3D 列印，拋光透明上漆</li>
+                <li>全新方形鋼製副車架（CAD 建模 + 傳統金屬成型）</li>
+                <li>主色青藍配色，致敬 Pac-Man 幽靈 Inky</li>
+              </ul>
+            </div>
+            <div class="spec-box">
+              <h4>性能 // CUSTOM PARTS</h4>
+              <ul class="spec-list">
+                <li>碳纖維上三角台 + Koso 儀錶整合座艙</li>
+                <li>客製分離把手：碳纖維桿 + CNC 鋁製夾具 + Koso 握把</li>
+                <li>碳纖維水箱護網 + 後輪整流側蓋</li>
+                <li>客製排氣管（鋁合金 + 碳纖維），3D 列印品牌徽章</li>
+                <li>Frando 來令片 / HRC 煞車油管 / Over 腳踏控</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="details-gallery">
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/f6/af/12/f6af126c68ef7fc38dbbecbbafacecd9.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/98/f8/36/98f8363a8d14c04a8270e2b8359b3882.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/f4/f2/20/f4f22014d3f5c684d160655ad50d741f.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/6a/5c/62/6a5c62aa0a5d2610d22595d2a0ebf911.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+          <div style="margin-top:16px; text-align:right;">
+            <a href="https://www.bikeexif.com/custom-yamaha-r1" target="_blank" rel="noopener"
+               style="font-family:'Orbitron',monospace; font-size:.55rem; letter-spacing:.15em; color:#555; text-decoration:none; text-transform:uppercase; transition:color .2s;"
+               onmouseover="this.style.color='#0377d4'" onmouseout="this.style.color='#555'">
+              原文來源 BIKE EXIF ↗
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SHOW CAR 02 ═══ -->
+    <div class="vehicle-card" data-cat="show-car" data-idx="1">
+      <div class="vehicle-cover" role="button" tabindex="0" aria-expanded="false"
+           style="background-image: url('https://i.pinimg.com/736x/f8/1b/81/f81b810b41d977110cf17ca8a9223dcd.jpg'); background-size: cover; background-position: center;">
+        <span class="cover-num">02</span>
+        <span class="cover-category cat-show">SHOW CAR</span>
+        <div class="vehicle-info">
+          <div class="vehicle-info-left">
+            <h2>聯合建造計畫 // HONDA CRF VMX</h2>
+            <div class="vehicle-tags">
+              <span class="v-tag show">SHOW CAR</span>
+              <span class="v-tag aero">VMX</span>
+              <span class="v-tag stance">協力打造</span>
+            </div>
+          </div>
+          <div class="expand-toggle">
+            <span class="toggle-label">DETAILS</span>
+            <span class="toggle-icon">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="vehicle-details">
+        <div class="vehicle-details-content">
+
+          <div style="margin-bottom:20px; padding:16px 18px; background:#0a0a0a; border:1px solid #252525; border-radius:10px; border-left:3px solid #0377d4;">
+            <p style="font-size:.95rem; color:#bbb; letter-spacing:.02em; line-height:1.75;">
+              由 <strong style="color:#fff;">Alex（車主）× Pit Works Design</strong> 協力打造。這次我們稱這個專案為「聯合建造計畫（Bike Cooperative）」——我們提供場地、經驗、工具與資源，讓車主親手參與，共同將這台 2017 Honda CRF 改造成復古 VMX 風格。
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/05/91/24/059124a779596f6dffd906e6981028a6.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/7d/7f/69/7d7f69ad52c3a73f9b2b5c6826c4ac66.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/aa/7d/3e/aa7d3ec8dcb0510ebaa8006c47c0ae5e.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+          <div class="specs-showcar">
+            <div class="spec-box">
+              <h4>EXTERIOR // 外觀</h4>
+              <ul class="spec-list">
+                <li>客製化車頭板（VMX 風格設計）</li>
+                <li>客製化油箱與椅墊</li>
+                <li>客製化副車架</li>
+                <li>客製化側蓋</li>
+                <li>客製化土除</li>
+              </ul>
+            </div>
+            <div class="spec-box">
+              <h4>性能 // CUSTOM PARTS</h4>
+              <ul class="spec-list">
+                <li>客製化性能排氣管</li>
+                <li>艾瑞斯（Aries）ECU 電腦</li>
+                <li>避震阻尼升級套件</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="details-gallery">
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/33/67/b6/3367b6b724436b9277eb3123c2ff0553.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/b2/ab/55/b2ab557f4525613ac6d6db368494627d.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/e7/e5/a1/e7e5a1ec3620fa18d8a4ed4f06b73993.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/c4/c5/df/c4c5dfb0930dd6ea377724cc69826ebb.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SHOW CAR 03 ═══ -->
+    <div class="vehicle-card" data-cat="show-car" data-idx="2">
+      <div class="vehicle-cover" role="button" tabindex="0" aria-expanded="false"
+           style="background-image: url('https://i.pinimg.com/736x/f2/e3/82/f2e382ec21d14089a99975044b7535d7.jpg'); background-size: cover; background-position: center;">
+        <span class="cover-num">03</span>
+        <span class="cover-category cat-show">SHOW CAR</span>
+        <div class="vehicle-info">
+          <div class="vehicle-info-left">
+            <h2>電動 DAX // HONDA DAX 電動改裝</h2>
+            <div class="vehicle-tags">
+              <span class="v-tag show">SHOW CAR</span>
+              <span class="v-tag parts">ELECTRIC</span>
+              <span class="v-tag aero">委託案</span>
+            </div>
+          </div>
+          <div class="expand-toggle">
+            <span class="toggle-label">DETAILS</span>
+            <span class="toggle-icon">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="vehicle-details">
+        <div class="vehicle-details-content">
+
+          <div style="margin-bottom:20px; padding:16px 18px; background:#0a0a0a; border:1px solid #252525; border-radius:10px; border-left:3px solid #0377d4;">
+            <p style="font-size:.95rem; color:#bbb; letter-spacing:.02em; line-height:1.75;">
+              由 <strong style="color:#fff;">客戶委託 × Pit Works Design</strong> 完成。以 Honda DAX 迷你小車為原型，將其全面升級為電動驅動。馬達支架以原廠引擎外型為參考原創設計，3D 列印原型後轉鑄鋁量產，讓改裝視覺上完全融入原車比例。
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/47/e4/c0/47e4c0cf0de7e59b884eb6a01a2d5d92.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/5c/27/34/5c273409e1938db20325db46746a1590.jpg');background-size:cover;background-position:center;"></div>
+            <div class="gallery-img" style="background-image:url('https://i.pinimg.com/736x/2f/42/31/2f42310108094e67023744705362817a.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+          <div class="specs-showcar">
+            <div class="spec-box">
+              <h4>EXTERIOR // 外觀</h4>
+              <ul class="spec-list">
+                <li>原型車：Honda DAX 迷你型小車</li>
+                <li>客製化迷彩鯊魚轟炸機主題塗裝</li>
+                <li>LED 大燈升級</li>
+                <li>馬達支架外型參考原廠引擎設計，視覺融合度高</li>
+              </ul>
+            </div>
+            <div class="spec-box">
+              <h4>性能 // CUSTOM PARTS</h4>
+              <ul class="spec-list">
+                <li>馬達支架：3D 列印原型 → 鑄鋁量產製造</li>
+                <li>電動馬達驅動系統</li>
+                <li>鋰電池組整合</li>
+                <li>全車電動化改裝</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="details-gallery">
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/04/1f/3c/041f3caf6fff4cdf5e20dbb0ac8b45f3.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/6b/93/ba/6b93bab68d6d8e2a05be54c81e061da2.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/2f/42/31/2f42310108094e67023744705362817a.jpg');background-size:cover;background-position:center;"></div>
+            <div class="detail-img" style="background-image:url('https://i.pinimg.com/736x/16/14/5c/16145cd2948fb778ac8e7b5273b3bac3.jpg');background-size:cover;background-position:center;"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PARTS ═══ -->
+    <div class="vehicle-card" data-cat="parts" data-idx="2">
+      <div class="vehicle-cover" role="button" tabindex="0" aria-expanded="false">
+        <span class="cover-num">P1</span>
+        <span class="cover-category cat-parts">PARTS 零件</span>
+        <div class="vehicle-info">
+          <div class="vehicle-info-left">
+            <h2>HYRO // AERO BODY KIT 001</h2>
+            <div class="vehicle-tags">
+              <span class="v-tag parts">PARTS</span>
+              <span class="v-tag aero">CARBON FIBER</span>
+            </div>
+          </div>
+          <div class="expand-toggle">
+            <span class="toggle-label">DETAILS</span>
+            <span class="toggle-icon">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="vehicle-details">
+        <div class="vehicle-details-content">
+          <!-- Parts: gallery + detail thumbs only, no spec boxes -->
+          <div class="gallery-grid">
+            <div class="gallery-img">PART IMG 01 // FRONT LIP</div>
+            <div class="gallery-img">PART IMG 02 // SIDE SKIRT</div>
+            <div class="gallery-img">PART IMG 03 // REAR WING</div>
+          </div>
+          <div class="details-gallery">
+            <div class="detail-img">TEXTURE</div>
+            <div class="detail-img">FIT CHECK</div>
+            <div class="detail-img">WEAVE DETAIL</div>
+            <div class="detail-img">FINISH</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /vehicle-list -->
+
+  <div class="empty-state" id="empty-state">// NO BUILDS MATCH THIS FILTER</div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="status-dot"></span>
+    <span>HYRO GARAGE // SYSTEM ONLINE</span>
+    <span style="margin-left:auto;opacity:.35">V 2.5.0</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const cards = document.querySelectorAll('.vehicle-card');
+  const btns  = document.querySelectorAll('.filter-btn');
+  const empty = document.getElementById('empty-state');
+
+  // entrance stagger
+  cards.forEach((c, i) => {
+    c.style.animationDelay = (.28 + i * .1) + 's';
+    c.dataset.visible = '1';
+  });
+
+  // expand toggle
+  cards.forEach(card => {
+    const cover = card.querySelector('.vehicle-cover');
+    const toggle = () => {
+      const open = card.classList.toggle('is-open');
+      cover.setAttribute('aria-expanded', String(open));
+    };
+    cover.addEventListener('click', toggle);
+    cover.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // filter
+  let cur = 'all';
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      if (f === cur) return;
+      cur = f;
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      let vis = 0;
+      cards.forEach(card => {
+        const show = f === 'all' || card.dataset.cat === f;
+        card.classList.toggle('hidden', !show);
+        if (show) {
+          vis++;
+          card.style.animation = 'none';
+          card.offsetHeight;
+          card.style.animation = '';
+          card.style.animationDelay = '0s';
+        }
+      });
+      empty.style.display = vis === 0 ? 'block' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

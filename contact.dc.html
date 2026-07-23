@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="./lang.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#ffffff;color:#141414;font-family:'DM Mono','Noto Sans TC',monospace;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.022) 3px,rgba(0,0,0,.022) 4px);pointer-events:none;z-index:9999;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  a{color:inherit;}
+  @media (max-width:900px){
+    .rwd-split{grid-template-columns:1fr !important;}
+  }
+  @media (max-width:600px){
+    .rwd-3{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<nav style="position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid #e8e8e5;">
+  <a href="index.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="width:9px;height:9px;border-radius:2px;background:#ff3b3b;display:inline-block;"></span>
+    <span style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.14em;color:#141414;">PITWORKS</span>
+  </a>
+  <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+    <a href="index.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">HOME</a>
+    <a href="ip.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">IP FIGURES</a>
+    <a href="vehicles.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">VEHICLES</a>
+    <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 14px;border-radius:6px;background:#ff3b3b;display:inline-flex;align-items:center;gap:6px;transition:box-shadow .25s;" style-hover="box-shadow:0 4px 16px rgba(255,59,59,.4);">SHOP <span style="font-size:.7rem;">↗</span></a>
+    <a href="contact.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#02579a;text-decoration:none;padding:8px 14px;border-radius:6px;background:rgba(3,119,212,.1);border:1px solid rgba(3,119,212,.35);">CONTACT</a>
+    <button onClick="{{ toggleLang }}" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.08em;color:#141414;padding:8px 14px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;transition:all .25s;margin-left:4px;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ langLabel }}</button>
+  </div>
+</nav>
+
+<div style="max-width:1320px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:20px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:#f6f6f3;border:1px solid #e8e8e5;border-radius:10px;font-family:'DM Mono',monospace;font-size:.7rem;color:#8a8a8a;letter-spacing:.06em;">
+    <div style="display:flex;align-items:center;gap:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#1db954;animation:blink 2.2s infinite;display:inline-block;"></span><span>Contact Channel Open — PITWORKS DESIGN</span></div>
+    <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.14em;">TWN // TAOYUAN</span>
+  </div>
+
+  <header style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;padding:44px 40px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-after="content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle at top right,rgba(255,59,59,.1) 0%,transparent 65%);pointer-events:none;">
+    <p style="font-family:'Orbitron',sans-serif;font-size:.6rem;color:#ff3b3b;letter-spacing:.25em;text-transform:uppercase;margin-bottom:12px;position:relative;z-index:1;">{{ headerTag }}</p>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:.03em;line-height:1;position:relative;z-index:1;margin-bottom:14px;color:#141414;">CONTACT</h1>
+    <p style="font-size:.85rem;color:#666;max-width:560px;position:relative;z-index:1;letter-spacing:.03em;line-height:1.8;">{{ headerDesc }}</p>
+  </header>
+
+  <section class="rwd-split" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+    <div style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;padding:28px 30px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+      <div style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid #e8e8e5;color:#141414;">Social</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <a href="https://www.instagram.com/pitworks.ted/" target="_blank" rel="noopener" style="background:#f6f6f3;height:54px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;">Instagram</a>
+        <a href="mailto:pitworksdesign@gmail.com" style="background:#f6f6f3;height:54px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.02em;color:#777;text-decoration:none;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;">pitworksdesign@gmail.com</a>
+      </div>
+    </div>
+
+    <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#ff3b3b;border:1px solid #ff3b3b;border-radius:16px;padding:28px 30px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:10px;transition:box-shadow .25s;" style-hover="box-shadow:0 8px 26px rgba(255,59,59,.3);">
+      <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.2em;color:rgba(255,255,255,.6);text-transform:uppercase;">Online Store</span>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#fff;">{{ goShop }} ↗</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.6;">{{ shopDesc }}</p>
+    </a>
+
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'zh' };
+  componentDidMount() { this.setState({ lang: window.__pitLang ? window.__pitLang.get() : 'zh' }); }
+  t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
+  renderVals() {
+    const t = this.t.bind(this);
+    return {
+      langLabel: this.state.lang === 'zh' ? 'EN' : '中文',
+      toggleLang: () => { const n = window.__pitLang.toggle(); this.setState({ lang: n }); },
+      headerTag: t('Get In Touch // 聯絡我們', 'Get In Touch'),
+      headerDesc: t('改裝諮詢、零件開發、IP 聯名或媒體採訪，都歡迎與我們聯繫。填寫下方表單，或直接透過以下管道找到我們。', 'Custom builds, parts R&D, IP collaborations, or press inquiries — feel free to reach out through any of the channels below.'),
+      goShop: t('前往商店', 'Visit Store'),
+      shopDesc: t('公仔、模型與改裝周邊，於 1shop 官方商店選購。', 'Figures, models & custom merch available at our official 1shop store.'),
+    };
+  }
+}
+</script>
+</body>
+</html>

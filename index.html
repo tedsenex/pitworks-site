@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="./lang.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#ffffff;color:#141414;font-family:'DM Mono','Noto Sans TC',monospace;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.022) 3px,rgba(0,0,0,.022) 4px);pointer-events:none;z-index:9999;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes barFill{to{width:100%}}
+  a{color:inherit;}
+  @media (max-width:900px){
+    .rwd-split{grid-template-columns:1fr !important;}
+    .rwd-3{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:600px){
+    .rwd-3{grid-template-columns:1fr !important;}
+    .rwd-2{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<nav style="position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid #e8e8e5;">
+  <a href="index.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="width:9px;height:9px;border-radius:2px;background:#ff3b3b;display:inline-block;"></span>
+    <span style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.14em;color:#141414;">PITWORKS</span>
+  </a>
+  <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+    <a href="index.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#02579a;text-decoration:none;padding:8px 14px;border-radius:6px;background:rgba(3,119,212,.1);border:1px solid rgba(3,119,212,.35);">HOME</a>
+    <a href="ip.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">IP FIGURES</a>
+    <a href="vehicles.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">VEHICLES</a>
+    <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 14px;border-radius:6px;background:#ff3b3b;display:inline-flex;align-items:center;gap:6px;transition:box-shadow .25s;" style-hover="box-shadow:0 4px 16px rgba(255,59,59,.4);">SHOP <span style="font-size:.7rem;">↗</span></a>
+    <a href="contact.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">CONTACT</a>
+    <button onClick="{{ toggleLang }}" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.08em;color:#141414;padding:8px 14px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;transition:all .25s;margin-left:4px;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ langLabel }}</button>
+  </div>
+</nav>
+
+<div style="max-width:1320px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:20px;">
+
+  <div style="opacity:0;animation:fadeUp .6s .05s cubic-bezier(.4,0,.2,1) forwards;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:#f6f6f3;border:1px solid #e8e8e5;border-radius:10px;font-family:'DM Mono',monospace;font-size:.7rem;color:#8a8a8a;letter-spacing:.06em;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="width:6px;height:6px;border-radius:50%;background:#1db954;animation:blink 2.2s infinite;display:inline-block;"></span>
+      <span>System Online — PITWORKS DESIGN CORE v3.0</span>
+    </div>
+    <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.14em;">TWN // TAOYUAN</span>
+  </div>
+
+  <section class="rwd-split" style="opacity:0;animation:fadeUp .6s .18s cubic-bezier(.4,0,.2,1) forwards;display:grid;grid-template-columns:1fr 1.2fr;gap:20px;">
+    <div style="background:#1a1a1a;border-radius:16px;padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;min-height:420px;" style-after="content:'PIT';font-family:'Orbitron',sans-serif;font-size:8rem;font-weight:900;color:rgba(255,255,255,.05);position:absolute;bottom:-20px;right:-10px;pointer-events:none;letter-spacing:-.02em;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#ff3b3b;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(255,59,59,.35);border-radius:4px;padding:4px 10px;background:rgba(0,0,0,.4);margin-bottom:20px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#ff3b3b;display:inline-block;"></span>senex.co.ltd
+        </div>
+        <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,4vw,3.6rem);line-height:1.05;text-transform:uppercase;font-weight:900;letter-spacing:.04em;color:#fff;position:relative;">PITWORKS<br>DESIGN</h1>
+        <p style="font-family:'DM Mono',monospace;font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.7;margin-top:20px;max-width:340px;">{{ heroSub }}</p>
+      </div>
+      <div style="margin-top:36px;">
+        <div style="display:flex;justify-content:space-between;font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.12em;color:rgba(255,255,255,.55);margin-bottom:6px;"><span>SYSTEM FULLY LOADED</span><span>100%</span></div>
+        <div style="width:100%;height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;"><div style="width:0;height:100%;background:#0377d4;border-radius:3px;animation:barFill 1.8s .8s cubic-bezier(.4,0,.2,1) forwards;"></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <img src="https://i.pinimg.com/736x/33/9c/cf/339ccfdfb3baf08e603700b40f94d156.jpg" alt="Main Visual" style="width:100%;height:260px;object-fit:cover;border-radius:16px;border:1px solid #e8e8e5;display:block;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <img src="https://i.pinimg.com/736x/1f/4c/25/1f4c2542076d00eaa1d00a0e362c1f5e.jpg" alt="Build Left" style="width:100%;height:160px;object-fit:cover;border-radius:16px;border:1px solid #e8e8e5;display:block;transition:transform .25s,border-color .25s;" style-hover="transform:scale(1.02);border-color:#cfcfcc;">
+        <img src="https://i.pinimg.com/736x/b8/1d/cc/b81dcc226412de72435cc18972ecf0f4.jpg" alt="Build Right" style="width:100%;height:160px;object-fit:cover;border-radius:16px;border:1px solid #e8e8e5;display:block;transition:transform .25s,border-color .25s;" style-hover="transform:scale(1.02);border-color:#cfcfcc;">
+      </div>
+    </div>
+  </section>
+
+  <div style="opacity:0;animation:fadeUp .6s .28s cubic-bezier(.4,0,.2,1) forwards;align-self:flex-start;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#8a8a8a;letter-spacing:.22em;text-transform:uppercase;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;background:#f6f6f3;">Projects</div>
+  <section class="rwd-3" style="opacity:0;animation:fadeUp .6s .28s cubic-bezier(.4,0,.2,1) forwards;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+
+    <a href="ip.dc.html" style="text-decoration:none;color:inherit;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;transform:translateY(-3px);" style-before="content:'';position:absolute;bottom:0;left:0;right:0;height:75%;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.1));z-index:1;">
+      <img src="https://i.pinimg.com/736x/af/5b/e9/af5be91c6d95cf09e469ed6b14361dc5.jpg" alt="Pitman IP" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <div style="position:absolute;top:18px;right:18px;z-index:2;"><span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#ff3b3b;color:#fff;">ORIGINAL IP</span></div>
+      <div style="position:relative;z-index:2;padding:24px 22px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.18em;color:#c9ccce;text-transform:uppercase;margin-bottom:6px;">Pitman Character</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.92rem;color:#f0f0f0;line-height:1.6;">{{ card1Desc }}</div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:8px 20px;border:1px solid #0377d4;border-radius:30px;color:#4aa3e8;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;" style-hover="background:#02579a;color:#fff;">{{ learnMore }} ↗</span>
+      </div>
+    </a>
+
+    <a href="vehicles.dc.html" style="text-decoration:none;color:inherit;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;transform:translateY(-3px);" style-before="content:'';position:absolute;bottom:0;left:0;right:0;height:75%;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.1));z-index:1;">
+      <img src="https://i.pinimg.com/736x/aa/15/3d/aa153d63be47f392d9fcbfda317f1328.jpg" alt="Blue Ghost" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <div style="position:absolute;top:18px;right:18px;z-index:2;"><span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#111827;color:#4aa3e8;border:1px solid rgba(3,119,212,.35);">BLUE GHOST</span></div>
+      <div style="position:relative;z-index:2;padding:24px 22px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.18em;color:#c9ccce;text-transform:uppercase;margin-bottom:6px;">Yamaha YZF-R1</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.92rem;color:#f0f0f0;line-height:1.6;">{{ card2Desc }}</div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:8px 20px;border:1px solid #0377d4;border-radius:30px;color:#4aa3e8;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;" style-hover="background:#02579a;color:#fff;">{{ learnMore }} ↗</span>
+      </div>
+    </a>
+
+    <a href="vehicles.dc.html" style="text-decoration:none;color:inherit;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .25s,transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;transform:translateY(-3px);" style-before="content:'';position:absolute;bottom:0;left:0;right:0;height:75%;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.1));z-index:1;">
+      <div style="position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(135deg,#e9e9e6 0px,#e9e9e6 14px,#f2f2ef 14px,#f2f2ef 28px);display:flex;align-items:center;justify-content:center;"><span style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:#b5b5b0;text-transform:uppercase;">Scrambler // image</span></div>
+      <div style="position:absolute;top:18px;right:18px;z-index:2;"><span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#242424;color:#c9ccce;border:1px solid #3a3a3a;">SCRAMBLER</span></div>
+      <div style="position:relative;z-index:2;padding:24px 22px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.18em;color:#c9ccce;text-transform:uppercase;margin-bottom:6px;">Honda Scrambler</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.92rem;color:#f0f0f0;line-height:1.6;">{{ card3Desc }}</div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:8px 20px;border:1px solid #0377d4;border-radius:30px;color:#4aa3e8;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;" style-hover="background:#02579a;color:#fff;">{{ learnMore }} ↗</span>
+      </div>
+    </a>
+
+  </section>
+
+  <div style="opacity:0;animation:fadeUp .6s .38s cubic-bezier(.4,0,.2,1) forwards;align-self:flex-start;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#0377d4;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(3,119,212,.3);border-radius:4px;padding:4px 10px;background:#eff6fc;">{{ whatWeDo }}</div>
+  <section class="rwd-split" style="opacity:0;animation:fadeUp .6s .38s cubic-bezier(.4,0,.2,1) forwards;background:#02579a;border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr 2.4fr;gap:24px;position:relative;overflow:hidden;">
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:clamp(2rem,3vw,3.4rem);font-weight:900;color:#fff;line-height:1;letter-spacing:.03em;">PIT<br>SENEX</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.55);letter-spacing:.14em;text-transform:uppercase;margin-top:12px;">Studio Core</div>
+    </div>
+    <div class="rwd-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+      <div style="background:rgba(0,0,0,.28);border-radius:12px;padding:24px 20px;border:1px solid rgba(255,255,255,.12);transition:border-color .25s,transform .25s;" style-hover="border-color:rgba(255,255,255,.4);transform:translateY(-2px);">
+        <span style="font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:14px;display:block;">01</span>
+        <div style="font-family:'DM Mono',monospace;font-size:.95rem;color:#fff;font-weight:500;margin-bottom:10px;letter-spacing:.04em;">{{ svc1Title }}</div>
+        <p style="font-family:'DM Mono',monospace;font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.75;">{{ svc1Desc }}</p>
+      </div>
+      <div style="background:rgba(0,0,0,.28);border-radius:12px;padding:24px 20px;border:1px solid rgba(255,255,255,.12);transition:border-color .25s,transform .25s;" style-hover="border-color:rgba(255,255,255,.4);transform:translateY(-2px);">
+        <span style="font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:14px;display:block;">02</span>
+        <div style="font-family:'DM Mono',monospace;font-size:.95rem;color:#fff;font-weight:500;margin-bottom:10px;letter-spacing:.04em;">{{ svc2Title }}</div>
+        <p style="font-family:'DM Mono',monospace;font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.75;">{{ svc2Desc }}</p>
+      </div>
+      <div style="background:rgba(0,0,0,.28);border-radius:12px;padding:24px 20px;border:1px solid rgba(255,255,255,.12);transition:border-color .25s,transform .25s;" style-hover="border-color:rgba(255,255,255,.4);transform:translateY(-2px);">
+        <span style="font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:14px;display:block;">03</span>
+        <div style="font-family:'DM Mono',monospace;font-size:.95rem;color:#fff;font-weight:500;margin-bottom:10px;letter-spacing:.04em;">{{ svc3Title }}</div>
+        <p style="font-family:'DM Mono',monospace;font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.75;">{{ svc3Desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="rwd-2" style="opacity:0;animation:fadeUp .6s .48s cubic-bezier(.4,0,.2,1) forwards;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+    <div style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;padding:28px 30px;position:relative;overflow:hidden;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid #e8e8e5;display:flex;justify-content:space-between;align-items:center;"><span>{{ exhTitle }}</span><span style="font-size:.58rem;color:#8a8a8a;">Timeline +</span></div>
+      <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="6">
+        <div style="{{ ev.style }}"><div style="font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;color:#7c8488;min-width:44px;padding-top:2px;letter-spacing:.06em;">{{ ev.year }}</div><div style="font-family:'DM Mono',monospace;font-size:.78rem;color:#666;line-height:1.6;">{{ ev.text }}</div></div>
+      </sc-for>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;padding:28px 30px;position:relative;overflow:hidden;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid #e8e8e5;display:flex;justify-content:space-between;align-items:center;"><span>Media Coverage</span><span style="font-size:.58rem;color:#8a8a8a;">Clicks +</span></div>
+      <div class="rwd-2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+        <a href="https://pipeburn.com/yamaha-r1-pitworks/" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">Pipeburn</a>
+        <a href="https://www.autoevolution.com/news/custom-yamaha-yzf-r1-blue-ghost-is-animated-by-playful-pac-man-imagery-174648.html" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">Autoevolution</a>
+        <a href="https://caferacerclub.com.au/blogs/moto/pitworks-design-blue-ghost-yzf-r1" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">Cafe Racer Club</a>
+        <a href="https://www.vinylpulse.com/2021/07/pitman-by-pit-works-design-x-lau-mo-works.html" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">Vinyl Pulse</a>
+        <a href="https://www.freebikermagazine.com/post/屬於手工車文化的設計師玩具-pitworks-design-pitman" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">{{ fbToy }}</a>
+        <a href="https://www.freebikermagazine.com/post/pitworks宇宙車間創作展-10-30-11-18引目設計空間搶先展出-11-21-ride-free-12接連登場！" target="_blank" rel="noopener" style="background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">{{ fbExh }}</a>
+        <a href="https://www.bikeexif.com/custom-yamaha-r1" target="_blank" rel="noopener" style="grid-column:1/-1;background:#f6f6f3;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#777;text-decoration:none;text-align:center;padding:6px 10px;border:1px solid #e8e8e5;transition:all .25s;" style-hover="color:#fff;border-color:#1a1a1a;background:#1a1a1a;box-shadow:0 4px 14px rgba(0,0,0,.15);">Bikeexif</a>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'zh' };
+  componentDidMount() { this.setState({ lang: window.__pitLang ? window.__pitLang.get() : 'zh' }); }
+  t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
+  renderVals() {
+    const t = this.t.bind(this);
+    const rowStyle = (last) => "display:flex;gap:20px;padding:12px 0;" + (last ? "" : "border-bottom:1px solid #eee;") + "align-items:flex-start;";
+    return {
+      langLabel: this.state.lang === 'zh' ? 'EN' : '中文',
+      toggleLang: () => { const n = window.__pitLang.toggle(); this.setState({ lang: n }); },
+      heroSub: t('未來 x 經典 最純粹的改裝與IP', 'Future × Classic — The Purest Custom & IP'),
+      card1Desc: t('磁吸關節 × 全手工塗裝 × 原創IP', 'Magnetic Joints × Hand-Painted × Original IP'),
+      card2Desc: t('靈感來自經典小精靈遊戲中的藍色幽靈「Inky」。全車以 3D 列印、CNC 加工與碳纖維複合材料為核心', 'Inspired by Pac-Man ghost "Inky." Built with 3D printing, CNC machining & carbon fiber composites'),
+      card3Desc: t('工業美學 × 手工改裝', 'Industrial Aesthetics × Handcrafted Custom'),
+      learnMore: t('了解更多', 'Learn More'),
+      whatWeDo: t('我們做什麼', 'What We Do'),
+      svc1Title: t('車輛改裝', 'Vehicle Custom'),
+      svc1Desc: t('將傳統手工改裝與現代工業設計完美結合，打造具備國際水準的硬核改裝車。', 'Merging traditional craftsmanship with modern industrial design to build world-class custom motorcycles.'),
+      svc2Title: t('零件開發', 'Parts R&D'),
+      svc2Desc: t('3D CAD 建模、光固化列印與 SLM 金屬 3D 列印等尖端技術，無縫導入機車零件開發中。', 'Leveraging 3D CAD, SLA & SLM metal printing for cutting-edge motorcycle parts development.'),
+      svc3Title: t('IP / 設計', 'IP / Design'),
+      svc3Desc: t('磁吸關節互動設計、精緻全手工塗裝，將實體玩具與機車藝術延伸至虛擬世界。', 'Magnetic joint interaction, meticulous hand-painting — extending physical toys & moto art into the digital realm.'),
+      exhTitle: t('展覽與紀錄', 'Exhibitions & Records'),
+      fbToy: t('Free Biker 玩具篇', 'Free Biker Toys'),
+      fbExh: t('Free Biker 展覽篇', 'Free Biker Expo'),
+      timeline: [
+        { year:'2020', text: t('11月 — RIDE FREE 11', 'Nov — RIDE FREE 11'), style: rowStyle(false) },
+        { year:'2021', text: t('10月 — PITWORKS SPACESTATION 宇宙車間創作展', 'Oct — PITWORKS SPACESTATION Exhibition'), style: rowStyle(false) },
+        { year:'2021', text: t('11月 — RIDE FREE 12', 'Nov — RIDE FREE 12'), style: rowStyle(false) },
+        { year:'2021', text: t('12月 — ONEOFF art fair', 'Dec — ONEOFF Art Fair'), style: rowStyle(false) },
+        { year:'2022', text: t('12月 — RIDE FREE 13', 'Dec — RIDE FREE 13'), style: rowStyle(false) },
+        { year:'2023', text: t('4月 — Speed & Crafts 台灣機車改裝工藝大展', 'Apr — Speed & Crafts Taiwan Custom Motorcycle Exhibition'), style: rowStyle(true) },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

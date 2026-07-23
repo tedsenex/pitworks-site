@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PITWORKS — IP // DESIGN TOYS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────────── */
+:root {
+  --black:     #000000;
+  --off-black: #0a0a0a;
+  --panel:     #111111;
+  --border:    #252525;
+  --border-hi: #444444;
+  --grey:      #8a9396;
+  --blue:      #02579a;
+  --blue-hi:   #0377d4;
+  --red:       #ff3b3b;
+  --text:      #ffffff;
+  --muted:     #555555;
+  --r:         16px;
+  --t:         0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Mono', 'Noto Sans TC', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* scanline overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 3px,
+    rgba(0,0,0,.055) 3px, rgba(0,0,0,.055) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
+.wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ─────────────────────────────────────────────
+   SHARED: PANEL (bg texture + glow)
+───────────────────────────────────────────── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--t);
+}
+.panel:hover { border-color: var(--border-hi); }
+
+.panel::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle at top right, rgba(2,87,154,.16) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+.panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+.panel > * { position: relative; z-index: 1; }
+
+/* ─────────────────────────────────────────────
+   SHARED: EYEBROW
+───────────────────────────────────────────── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .52rem; color: var(--muted);
+  letter-spacing: .22em; text-transform: uppercase;
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 4px 10px; background: rgba(0,0,0,.5);
+}
+.eyebrow.e-blue { color: var(--blue-hi); border-color: rgba(3,119,212,.35); }
+.eyebrow.e-red  { color: var(--red);     border-color: rgba(255,59,59,.35); }
+
+/* ─────────────────────────────────────────────
+   SHARED: TAGS
+───────────────────────────────────────────── */
+.tag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .5rem; letter-spacing: .12em;
+  padding: 4px 11px; border-radius: 4px;
+  text-transform: uppercase; display: inline-block;
+}
+.tag-show  { background: var(--red); color: #fff; }
+.tag-parts { background: #111827; color: var(--blue-hi); border: 1px solid rgba(3,119,212,.35); }
+.tag-grey  { background: #242424; color: var(--grey); border: 1px solid #3a3a3a; }
+.tag-green { background: #0a1f10; color: #1db954; border: 1px solid rgba(29,185,84,.3); }
+
+/* ─────────────────────────────────────────────
+   SHARED: DESC-STRIP
+───────────────────────────────────────────── */
+.desc-strip {
+  padding: 14px 16px;
+  background: var(--off-black);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blue-hi);
+  border-radius: 0 10px 10px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: .88rem; color: #999; line-height: 1.75;
+}
+
+/* ─────────────────────────────────────────────
+   SHARED: SECTION HEADER
+───────────────────────────────────────────── */
+.section-head {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  padding-bottom: 14px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.section-head-action {
+  font-size: .58rem; color: var(--muted); cursor: pointer;
+  transition: color var(--t);
+}
+.section-head-action:hover { color: var(--blue-hi); }
+
+/* ─────────────────────────────────────────────
+   STATUS DOT
+───────────────────────────────────────────── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #1db954; animation: blink 2.2s infinite;
+  display: inline-block; flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────
+   FADE-UP ENTRANCE
+───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.fu { opacity:0; animation: fadeUp .6s cubic-bezier(.4,0,.2,1) forwards; }
+.fu-0{animation-delay:.05s} .fu-1{animation-delay:.18s}
+.fu-2{animation-delay:.28s} .fu-3{animation-delay:.38s}
+.fu-4{animation-delay:.48s} .fu-5{animation-delay:.58s}
+.fu-6{animation-delay:.68s}
+
+/* ─────────────────────────────────────────────
+   STATUS BAR
+───────────────────────────────────────────── */
+.statusbar {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: var(--off-black);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem; color: var(--muted);
+  letter-spacing: .06em;
+}
+.statusbar-left { display: flex; align-items: center; gap: 10px; }
+.statusbar-right {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .52rem; letter-spacing: .14em; color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────
+   ① HEADER
+───────────────────────────────────────────── */
+.ip-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  min-height: 320px;
+  transition: border-color var(--t);
+}
+.ip-header:hover { border-color: var(--border-hi); }
+
+.ip-header-text {
+  background: var(--blue);
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* blue panel shimmer */
+.ip-header-text::before {
+  content: '';
+  position: absolute; top: -40px; left: -40px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* watermark */
+.ip-header-text::after {
+  content: 'IP';
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10rem; font-weight: 900;
+  color: rgba(0,0,0,.1);
+  position: absolute; bottom: -30px; right: -20px;
+  pointer-events: none; user-select: none;
+  letter-spacing: -.04em; line-height: 1;
+}
+
+.ip-h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: .04em;
+  color: #fff;
+  position: relative; z-index: 1;
+}
+
+/* glitch */
+@keyframes glitch {
+  0%,93%,100%{opacity:0;transform:translateX(-2px)}
+  94%{opacity:.4;transform:translateX(3px)}
+  96%{opacity:.25;transform:translateX(-4px)}
+}
+.ip-h1::before {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+  color: var(--red);
+  clip-path: polygon(0 30%, 100% 30%, 100% 52%, 0 52%);
+  animation: glitch 9s 4s infinite;
+  pointer-events: none;
+}
+
+.ip-header-body {
+  position: relative; z-index: 1;
+}
+
+.ip-tagline {
+  font-family: 'DM Mono', monospace;
+  font-size: .95rem; color: rgba(255,255,255,.7);
+  line-height: 1.8; margin-top: 18px;
+}
+
+.ip-header-visual {
+  background: #050505;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* grid texture on visual */
+.ip-header-visual::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+.ip-placeholder {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .58rem; letter-spacing: .2em;
+  color: #2a2a2a; text-transform: uppercase;
+  text-align: center; line-height: 2;
+}
+
+/* ─────────────────────────────────────────────
+   ② CONCEPT — WORLD BANNER
+───────────────────────────────────────────── */
+.concept-banner {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--panel);
+  position: relative; overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  transition: border-color var(--t);
+}
+.concept-banner:hover { border-color: var(--border-hi); }
+
+.concept-banner::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 400px; height: 100%;
+  background: radial-gradient(circle at right center, rgba(2,87,154,.2) 0%, transparent 65%);
+  pointer-events: none;
+}
+.concept-banner::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.concept-banner > * { position: relative; z-index: 1; }
+
+.concept-banner-text {
+  padding: 36px 40px;
+}
+
+.concept-banner-watermark {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8rem; font-weight: 900;
+  color: rgba(255,255,255,.025);
+  position: absolute; right: -10px; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; user-select: none;
+  letter-spacing: -.04em; line-height: 1;
+  z-index: 0;
+}
+
+.concept-banner-lead {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700; letter-spacing: .03em;
+  text-transform: uppercase; line-height: 1.3;
+  margin-bottom: 16px;
+  max-width: 640px;
+}
+
+.concept-banner-body {
+  font-family: 'DM Mono', monospace;
+  font-size: .95rem; color: #888; line-height: 1.85;
+  max-width: 600px;
+}
+
+.concept-stats {
+  display: flex;
+  align-items: stretch;
+  border-left: 1px solid var(--border);
+  position: relative; z-index: 1;
+}
+
+.concept-stat {
+  padding: 0 36px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; gap: 6px;
+  border-right: 1px solid var(--border);
+}
+.concept-stat:last-child { border-right: none; }
+
+.cs-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--text); line-height: 1;
+}
+.cs-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; color: var(--muted);
+  letter-spacing: .14em; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────
+   ② CONCEPT — CARDS ROW
+───────────────────────────────────────────── */
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.concept-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 32px 34px;
+  background: var(--panel);
+  position: relative; overflow: hidden;
+  transition: border-color var(--t);
+  display: flex; flex-direction: column; gap: 0;
+}
+.concept-card:hover { border-color: var(--border-hi); }
+
+.concept-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle at top right, rgba(2,87,154,.13) 0%, transparent 65%);
+  pointer-events: none;
+}
+.concept-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.concept-card > * { position: relative; z-index: 1; }
+
+.concept-badge {
+  display: inline-block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .5rem; letter-spacing: .18em;
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 4px 10px; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 18px;
+}
+
+.concept-card h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.concept-card p {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; color: #888; line-height: 1.85;
+  flex: 1;
+}
+
+/* ─────────────────────────────────────────────
+   ② CONCEPT — DESIGNER STORY
+───────────────────────────────────────────── */
+.story-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  overflow: hidden;
+  position: relative;
+  transition: border-color var(--t);
+}
+.story-panel:hover { border-color: var(--border-hi); }
+
+.story-panel::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 320px; height: 100%;
+  background: radial-gradient(circle at right center, rgba(2,87,154,.14) 0%, transparent 60%);
+  pointer-events: none;
+}
+.story-panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+.story-portrait {
+  background: #080808;
+  border-right: 1px solid var(--border);
+  display: flex; align-items: flex-end;
+  position: relative; overflow: hidden;
+  min-height: 300px;
+}
+.story-portrait-placeholder {
+  width: 100%; height: 100%;
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .5rem; letter-spacing: .18em;
+  color: #252525; text-transform: uppercase; text-align: center;
+  line-height: 2;
+}
+/* bottom fade on portrait */
+.story-portrait::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0,0,0,.85), transparent);
+  pointer-events: none; z-index: 1;
+}
+.story-portrait-label {
+  position: relative; z-index: 2;
+  padding: 16px 18px;
+}
+.story-portrait-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .08em; color: var(--text);
+  text-transform: uppercase;
+}
+.story-portrait-role {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem; color: var(--grey);
+  margin-top: 4px;
+}
+
+.story-text {
+  padding: 36px 40px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 20px;
+  position: relative; z-index: 1;
+}
+
+.story-pull {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(.9rem, 1.4vw, 1.15rem);
+  font-weight: 700; line-height: 1.4;
+  letter-spacing: .02em; color: var(--text);
+  max-width: 520px;
+}
+
+.story-body {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; color: #888; line-height: 1.9;
+  max-width: 560px;
+}
+
+.story-tags {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────────────
+   ② CONCEPT — PHOTO & ILLUS COLUMNS
+───────────────────────────────────────────── */
+.media-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.media-col {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--panel);
+  transition: border-color var(--t);
+}
+.media-col:hover { border-color: var(--border-hi); }
+
+.media-col-head {
+  padding: 18px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.media-col-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .68rem; letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.media-col-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; color: var(--muted);
+}
+
+.media-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.media-thumb {
+  background: #0a0a0a;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .48rem; letter-spacing: .14em;
+  color: #2a2a2a; text-transform: uppercase; text-align: center;
+  line-height: 1.8;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: background var(--t);
+}
+.media-thumb:hover { background: #141414; }
+
+/* hover overlay */
+.media-thumb::after {
+  content: '↗';
+  position: absolute; top: 10px; right: 12px;
+  font-size: .9rem; color: var(--blue-hi);
+  opacity: 0; transition: opacity var(--t);
+  font-family: sans-serif;
+}
+.media-thumb:hover::after { opacity: 1; }
+
+/* illustration col has red accent */
+.media-col.illus .media-col-title { color: var(--red); }
+.media-col.illus .media-thumb::after { color: var(--red); }
+.media-col.illus .media-col-head { border-bottom-color: rgba(255,59,59,.2); }
+
+.media-col-footer {
+  padding: 14px 22px;
+  border-top: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────
+   ③ WORKS FILTER BAR
+───────────────────────────────────────────── */
+.filter-bar {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .56rem; letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 7px 16px; border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--muted);
+  cursor: pointer;
+  transition: all var(--t);
+}
+.filter-btn:hover {
+  border-color: var(--border-hi); color: var(--text);
+}
+.filter-btn.active {
+  background: var(--blue); color: var(--text);
+  border-color: var(--blue-hi);
+}
+.filter-btn.active.f-red {
+  background: var(--red); border-color: var(--red);
+}
+
+.filter-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem; color: var(--muted);
+  margin-left: auto;
+  letter-spacing: .06em;
+}
+
+/* hidden card */
+.toy-card.hidden {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────
+   ③ TOY CARDS (expandable)
+───────────────────────────────────────────── */
+.toy-list {
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.toy-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: border-color var(--t);
+  position: relative;
+}
+.toy-card:hover { border-color: var(--border-hi); }
+
+.toy-card summary { list-style: none; cursor: pointer; display: block; }
+.toy-card summary::-webkit-details-marker { display: none; }
+
+/* cover area */
+.toy-cover {
+  position: relative;
+  height: 320px;
+  background: #050505;
+  display: flex; align-items: flex-end;
+  padding: 28px 30px;
+  overflow: hidden;
+}
+
+/* cover grid texture */
+.toy-cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+/* cover bottom gradient */
+.toy-cover::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,.9), transparent);
+  pointer-events: none;
+}
+
+.toy-cover-placeholder {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Orbitron', sans-serif;
+  font-size: .55rem; letter-spacing: .2em;
+  color: #222; text-transform: uppercase;
+}
+
+.toy-info {
+  position: relative; z-index: 2;
+  width: 100%;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 16px;
+}
+
+.toy-info h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: .04em; line-height: 1.1;
+  color: #fff;
+}
+
+.expand-btn {
+  flex-shrink: 0;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .58rem; letter-spacing: .14em;
+  padding: 8px 18px; border-radius: 20px;
+  border: 1px solid var(--border-hi);
+  color: var(--grey);
+  white-space: nowrap;
+  transition: all var(--t);
+}
+.toy-card[open] .expand-btn {
+  background: var(--text); color: var(--black);
+  border-color: var(--text);
+}
+.toy-card:not([open]) .expand-btn::after { content: 'EXPAND +'; }
+.toy-card[open] .expand-btn::after { content: 'CLOSE −'; }
+
+/* expand content */
+.toy-details {
+  background: var(--off-black);
+  border-top: 1px solid var(--border);
+  padding: 28px 30px 0;
+  position: relative;
+}
+
+.toy-details::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.toy-details > * { position: relative; z-index: 1; }
+
+.concept-block {
+  margin-bottom: 22px;
+}
+
+.concept-block .label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .6rem; letter-spacing: .18em;
+  color: var(--grey); text-transform: uppercase;
+  margin-bottom: 10px; display: block;
+}
+
+.concept-block p {
+  font-family: 'DM Mono', monospace;
+  font-size: .95rem; color: #ccc; line-height: 1.8;
+  max-width: 760px;
+}
+
+/* full-width 4-image inner gallery */
+.inner-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin: 0 -30px; /* bleed to card edges */
+}
+
+.inner-img {
+  background: #0c0c0c;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .48rem; letter-spacing: .16em;
+  color: #222; text-transform: uppercase; text-align: center;
+  line-height: 2;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: background var(--t);
+}
+.inner-img:hover { background: #161616; }
+
+/* zoom icon on hover */
+.inner-img::after {
+  content: '⊕';
+  position: absolute; bottom: 10px; right: 12px;
+  font-size: 1rem; color: rgba(255,255,255,.3);
+  opacity: 0; transition: opacity var(--t);
+  font-family: sans-serif;
+}
+.inner-img:hover::after { opacity: 1; }
+
+/* actual img tag inside */
+.inner-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* split grid */
+.details-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.sub-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .6rem; letter-spacing: .18em;
+  color: var(--grey); text-transform: uppercase;
+  margin-bottom: 14px; display: block;
+}
+
+/* gallery */
+.gallery-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+.gallery-cell {
+  background: #181818;
+  height: 140px; border-radius: 10px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .5rem; letter-spacing: .14em;
+  color: #333; text-transform: uppercase;
+  transition: border-color var(--t);
+}
+.gallery-cell:hover { border-color: var(--border-hi); }
+
+/* variants */
+.variants { display: flex; flex-direction: column; gap: 12px; }
+
+.variant {
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: border-color var(--t);
+}
+.variant:hover { border-color: var(--border-hi); }
+
+.variant-name {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; font-weight: 500;
+  color: var(--text); margin-bottom: 4px;
+}
+.variant-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: .85rem; color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────
+   ④ BOTTOM GRID
+───────────────────────────────────────────── */
+.bottom-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+/* timeline */
+.timeline-row {
+  display: flex; gap: 20px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  transition: background var(--t);
+}
+.timeline-row:last-child { border-bottom: none; }
+.timeline-row:hover {
+  background: rgba(255,255,255,.02);
+  margin: 0 -8px; padding-left: 8px; padding-right: 8px;
+  border-radius: 8px;
+}
+
+.t-year {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .65rem; font-weight: 700;
+  color: var(--blue-hi); min-width: 72px;
+  padding-top: 2px; letter-spacing: .06em;
+}
+.t-text {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; color: #ccc; line-height: 1.6;
+}
+.t-text strong { color: var(--text); font-weight: 500; }
+
+/* media */
+.media-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+
+.media-item {
+  background: #161616;
+  height: 56px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .56rem; letter-spacing: .1em; text-transform: uppercase;
+  color: #666; text-decoration: none; text-align: center;
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  transition: color var(--t), border-color var(--t), box-shadow var(--t);
+}
+.media-item::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--blue);
+  transform: translateY(100%);
+  transition: transform var(--t); z-index: 0;
+}
+.media-item span { position: relative; z-index: 1; }
+.media-item:hover {
+  color: #fff;
+  border-color: var(--blue-hi);
+  box-shadow: 0 4px 14px rgba(2,87,154,.4);
+}
+.media-item:hover::before { transform: translateY(0); }
+
+/* ─────────────────────────────────────────────
+   ⑤ CTA
+───────────────────────────────────────────── */
+.cta-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+
+.cta-box {
+  border: 1px solid var(--border);
+  border-radius: var(--r); padding: 32px 28px;
+  background: var(--panel);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+  transition: border-color var(--t), transform var(--t);
+}
+.cta-box:hover {
+  border-color: var(--border-hi);
+  transform: translateY(-3px);
+}
+.cta-box::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle at top right, rgba(2,87,154,.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-box::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.cta-box > * { position: relative; z-index: 1; }
+
+.cta-box.primary {
+  background: var(--red);
+  border-color: var(--red);
+}
+.cta-box.primary::before {
+  background: radial-gradient(circle at top right, rgba(255,255,255,.1) 0%, transparent 65%);
+}
+.cta-box.primary:hover { border-color: #fff; }
+
+.cta-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .52rem; letter-spacing: .2em;
+  color: var(--muted); text-transform: uppercase;
+}
+.cta-box.primary .cta-num { color: rgba(255,255,255,.5); }
+
+.cta-h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.cta-p {
+  font-family: 'DM Mono', monospace;
+  font-size: .92rem; color: #999; line-height: 1.7;
+}
+.cta-box.primary .cta-p { color: rgba(255,255,255,.65); }
+
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 22px;
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  border-radius: 30px;
+  color: var(--text); text-decoration: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+  transition: all var(--t);
+  margin-top: auto;
+}
+.cta-btn:hover {
+  background: var(--text); color: var(--black);
+  border-color: var(--text);
+}
+.cta-box.primary .cta-btn {
+  background: var(--black); color: var(--text);
+  border-color: transparent;
+}
+.cta-box.primary .cta-btn:hover {
+  background: var(--text); color: var(--black);
+}
+
+/* ─────────────────────────────────────────────
+   RWD
+───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   RWD — 960px TABLET
+───────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .ip-header { grid-template-columns: 1fr; }
+  .ip-header-visual { min-height: 260px; }
+
+  .concept-banner { grid-template-columns: 1fr; }
+  .concept-stats {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    flex-direction: row;
+    justify-content: center;
+  }
+  .concept-stat {
+    flex: 1;
+    padding: 18px 24px;
+    border-right: 1px solid var(--border);
+  }
+  .concept-stat:last-child { border-right: none; }
+
+  .concept-grid { grid-template-columns: 1fr 1fr; }
+
+  .story-panel { grid-template-columns: 220px 1fr; }
+
+  .media-cols { grid-template-columns: 1fr 1fr; }
+
+  .details-split { grid-template-columns: 1fr; }
+
+  .filter-bar { flex-wrap: wrap; }
+}
+
+/* ─────────────────────────────────────────────
+   RWD — 768px
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .concept-grid { grid-template-columns: 1fr; }
+
+  .story-panel { grid-template-columns: 1fr; }
+  .story-portrait { min-height: 280px; }
+  .story-portrait::after { height: 40%; }
+
+  .media-cols { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────
+   RWD — 600px MOBILE
+───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .wrap { padding: 16px 14px 60px; gap: 14px; }
+
+  .statusbar { flex-wrap: wrap; gap: 6px; }
+  .statusbar-right { display: none; }
+
+  .ip-header { gap: 0; }
+  .ip-header-text { padding: 28px 24px; }
+  .ip-h1 { font-size: 2rem; }
+  .ip-header-visual { min-height: 220px; }
+
+  .concept-banner-text { padding: 24px 20px; }
+  .concept-banner-lead { font-size: 1rem; }
+  .concept-stats { flex-wrap: wrap; }
+  .concept-stat { padding: 14px 16px; min-width: 30%; }
+  .concept-banner-watermark { font-size: 5rem; }
+
+  .concept-card { padding: 24px 22px; }
+
+  .story-panel { grid-template-columns: 1fr; }
+  .story-portrait { min-height: 240px; }
+  .story-text { padding: 24px 22px; }
+  .story-pull { font-size: .9rem; }
+
+  .media-cols { grid-template-columns: 1fr; }
+  .media-col-grid { grid-template-columns: 1fr 1fr; }
+
+  .toy-cover { height: 220px; padding: 18px 20px; }
+  .toy-info h2 { font-size: 1rem; }
+  .expand-btn { padding: 6px 14px; font-size: .52rem; }
+  .toy-details { padding: 20px 20px 0; }
+  .inner-gallery { margin: 0 -20px; }
+
+  .filter-bar { flex-wrap: wrap; gap: 6px; }
+  .filter-count { width: 100%; margin-left: 0; margin-top: 2px; }
+
+  .section-head { font-size: .62rem; }
+  .panel { padding: 22px 20px !important; }
+
+  .cta-box { padding: 24px 22px; }
+  .cta-h3 { font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- STATUS BAR -->
+  <div class="statusbar fu fu-0">
+    <div class="statusbar-left">
+      <span class="dot"></span>
+      <span>IP Module Loaded — PITWORKS DESIGN</span>
+    </div>
+    <div class="statusbar-right">Original IP // Toy Division</div>
+  </div>
+
+  <!-- ① HEADER -->
+  <header class="ip-header fu fu-1">
+    <div class="ip-header-text">
+      <div>
+        <div class="eyebrow e-red" style="margin-bottom:20px;">
+          <span class="dot" style="background:var(--red);animation:none;"></span>
+          Original IP
+        </div>
+        <h1 class="ip-h1" data-text="IP //&#10;DESIGN&#10;TOYS">
+          IP //<br>DESIGN<br>TOYS
+        </h1>
+      </div>
+      <div class="ip-header-body">
+        <p class="ip-tagline">
+          將街頭改裝文化與近未來科技結合，打造具備實體化展示與數位資產價值的原創角色與潮流玩具收藏。
+        </p>
+      </div>
+    </div>
+    <div class="ip-header-visual">
+      <img src="https://i.pinimg.com/736x/89/a2/83/89a283e63782dabb05b52b6fe3755608.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+  </header>
+
+  <!-- ② CONCEPT -->
+  <div class="eyebrow fu fu-2" style="align-self:flex-start;">IP Concept</div>
+
+  <!-- World Banner -->
+  <div class="concept-banner fu fu-2">
+    <div class="concept-banner-text">
+      <div class="eyebrow e-blue" style="margin-bottom:18px;">World Overview</div>
+      <div class="concept-banner-lead">
+        近未來地下城市——<br>速度、鋼鐵與反叛的宇宙觀
+      </div>
+      <p class="concept-banner-body">
+        PITWORKS IP 宇宙設定於 2049 年的架空亞洲城市。在這裡，國家監管的賽道已被廢棄，地下車隊在廢棄工業區發展出自成一格的速度文化。每位角色都是這個世界裡某個「崗位」的具象化——技師、駭客、嚮導、獵人——彼此對立又相依存。
+      </p>
+    </div>
+    <div class="concept-stats">
+      <div class="concept-stat">
+        <span class="cs-num">06</span>
+        <span class="cs-lbl">Characters</span>
+      </div>
+      <div class="concept-stat">
+        <span class="cs-num">12+</span>
+        <span class="cs-lbl">Variants</span>
+      </div>
+      <div class="concept-stat">
+        <span class="cs-num">2021</span>
+        <span class="cs-lbl">Est.</span>
+      </div>
+    </div>
+    <div class="concept-banner-watermark">HYRO</div>
+  </div>
+
+  <!-- Three concept cards → two cards -->
+  <section class="concept-grid fu fu-2">
+    <div class="concept-card">
+      <span class="concept-badge">Philosophy</span>
+      <h2>IP 理念</h2>
+      <p>我們創造的不是單純的公仔，而是乘載賽博龐克精神的「街頭載體」。每一個角色都代表著一種對未來移動方式的叛逆想像，將冷硬的金屬與擬人化的性格完美融合。</p>
+    </div>
+    <div class="concept-card">
+      <span class="concept-badge">Origin</span>
+      <h2>設計來源</h2>
+      <p>靈感汲取自 90 年代 JDM 改裝文化、機能服飾 Techwear 與末日科幻美學。角色的裝甲、面罩與服裝細節，皆對應著我們真實開發的車體改裝套件。</p>
+    </div>
+  </section>
+
+  <!-- Designer Story -->
+  <div class="story-panel fu fu-2">
+    <div class="story-portrait">
+      <img src="https://i.pinimg.com/736x/d0/f6/c9/d0f6c95f822821399f4ecb467f46a372.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      <div class="story-portrait-label">
+        <div class="story-portrait-name">PITWORKS</div>
+        <div class="story-portrait-role">Designer / Founder</div>
+      </div>
+    </div>
+    <div class="story-text">
+      <div class="eyebrow e-blue">Designer Story</div>
+      <div class="story-pull">
+        從車庫焊機到國際展覽——<br>一個改裝師如何做出自己的角色 IP
+      </div>
+      <p class="story-body">
+        PITWORKS 的創辦人從事機車改裝超過十年，習慣用雙手解決問題。2019 年，他開始把幾個常在工作台旁轉悠的「假想角色」畫下來——那些戴著焊接面罩、身穿機能背心的人物，其實都是他自己在不同崗位上的投影。<br><br>
+        第一個原型公仔用熟石膏翻模、手塗丙烯，做完就擺在工具箱上。沒想到朋友看了問能不能買。後來是展覽、媒體報導、授權合作，一步步走到現在。他說自己從沒想過做玩具，只是想把腦子裡的東西弄出來。
+      </p>
+      <div class="story-tags">
+        <span class="tag tag-grey">改裝師</span>
+        <span class="tag tag-parts">IP Creator</span>
+        <span class="tag tag-grey">自學雕塑</span>
+        <span class="tag tag-show">台灣製造</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo + Illustration Columns -->
+  <div class="media-cols fu fu-2">
+    <div class="media-col">
+      <div class="media-col-head">
+        <span class="media-col-title">Photo Works</span>
+        <span class="media-col-count">12 items</span>
+      </div>
+      <div class="media-col-grid">
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/32/5c/9f/325c9f0aa5bc5166efca6037ef349603.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/35/b2/82/35b28276191ade182f4de778532a62aa.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/f7/04/a3/f704a3cf008c28df12d06b29a35c2b74.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/35/70/9c/35709cd26848a1b85a7ecc99b3dbcd1d.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+    <div class="media-col illus">
+      <div class="media-col-head">
+        <span class="media-col-title">Illustration Works</span>
+        <span class="media-col-count">08 items</span>
+      </div>
+      <div class="media-col-grid">
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/ef/8d/58/ef8d58b7cc0b52247206f4f944f84fb8.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/af/64/b6/af64b608e833f07f309c5ecee09671cc.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/1b/e3/97/1be397b74d83ad79b1a61ef12addd896.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="media-thumb"><img src="https://i.pinimg.com/736x/88/d5/8a/88d58aba20e6189ff771bdaa4c330ae6.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ WORKS -->
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;" class="fu fu-3">
+    <div class="eyebrow e-blue">Works</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="character">Character</button>
+      <button class="filter-btn f-red" data-filter="vehicle">Vehicle</button>
+      <button class="filter-btn" data-filter="illustration">Illustration</button>
+      <span class="filter-count" id="filter-count">2 items</span>
+    </div>
+  </div>
+
+  <div class="toy-list fu fu-3" id="toy-list">
+
+    <details class="toy-card" data-type="character">
+      <summary>
+        <div class="toy-cover">
+          <div class="toy-cover-placeholder">Character Cover Image</div>
+          <div class="toy-info">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="tag tag-show">HYRO-01</span>
+                <span class="tag tag-parts">Character</span>
+              </div>
+              <h2>首席技師 — KAI 魁</h2>
+            </div>
+            <div class="expand-btn"></div>
+          </div>
+        </div>
+      </summary>
+      <div class="toy-details">
+        <div class="concept-block">
+          <span class="label">Design Concept // 設計概念</span>
+          <p>代號 KAI，設定為地下車隊的首席技師。頭部配備整合式 AR 焊接面罩，身穿多口袋機能背心，背部搭載微型氮氣加速瓶，象徵著對絕對速度的狂熱追求。</p>
+        </div>
+        <div class="inner-gallery">
+          <div class="inner-img">Helmet Detail</div>
+          <div class="inner-img">Weapon / Tool</div>
+          <div class="inner-img">Tech-Wear</div>
+          <div class="inner-img">Backpack</div>
+        </div>
+      </div>
+    </details>
+
+    <details class="toy-card" data-type="character">
+      <summary>
+        <div class="toy-cover">
+          <div class="toy-cover-placeholder">Character Cover Image</div>
+          <div class="toy-info">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="tag tag-parts">HYRO-02</span>
+                <span class="tag tag-grey">Character</span>
+              </div>
+              <h2>數位領航員 — AURA 靈</h2>
+            </div>
+            <div class="expand-btn"></div>
+          </div>
+        </div>
+      </summary>
+      <div class="toy-details">
+        <div class="concept-block">
+          <span class="label">Design Concept // 設計概念</span>
+          <p>代號 AURA，數位世界的駭客兼領航員。設計特徵為半透明的數據鏈路義體與空氣動力學護甲，專門破解防護網並為實體車輛提供最佳賽道運算。</p>
+        </div>
+        <div class="inner-gallery">
+          <div class="inner-img">Cyber Visor</div>
+          <div class="inner-img">Data Cables</div>
+          <div class="inner-img">Aero Suit</div>
+          <div class="inner-img">Hologram Base</div>
+        </div>
+      </div>
+    </details>
+
+    <details class="toy-card" data-type="vehicle">
+      <summary>
+        <div class="toy-cover">
+          <div class="toy-cover-placeholder">Vehicle Cover Image</div>
+          <div class="toy-info">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="tag tag-show">VH-01</span>
+                <span class="tag tag-grey" style="color:var(--red);border-color:rgba(255,59,59,.35);">Vehicle</span>
+              </div>
+              <h2>Blue Ghost — YZF-R1</h2>
+            </div>
+            <div class="expand-btn"></div>
+          </div>
+        </div>
+      </summary>
+      <div class="toy-details">
+        <div class="concept-block">
+          <span class="label">Build Notes // 車輛說明</span>
+          <p>以 Yamaha YZF-R1 為基礎，搭載 SLM 金屬 3D 列印整流罩套件，全車水貼以 PAC-MAN 像素圖像為靈感，呼應 IP 角色的電玩賽博美學。</p>
+        </div>
+        <div class="inner-gallery">
+          <div class="inner-img">SLM Fairing</div>
+          <div class="inner-img">PAC-MAN Wrap</div>
+          <div class="inner-img">Exhaust System</div>
+          <div class="inner-img">Cockpit</div>
+        </div>
+      </div>
+    </details>
+
+    <details class="toy-card" data-type="illustration">
+      <summary>
+        <div class="toy-cover">
+          <div class="toy-cover-placeholder">Illustration Cover</div>
+          <div class="toy-info">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="tag tag-show">IL-01</span>
+                <span class="tag tag-grey">Illustration</span>
+              </div>
+              <h2>Pitman — Key Visual Series</h2>
+            </div>
+            <div class="expand-btn"></div>
+          </div>
+        </div>
+      </summary>
+      <div class="toy-details">
+        <div class="concept-block">
+          <span class="label">Series Note // 系列說明</span>
+          <p>Pitman Key Visual 系列為 IP 官方授權插畫，由設計師本人繪製，作為各款公仔的核心視覺基礎。風格融合機械線稿與賽博龐克色彩語言。</p>
+        </div>
+        <div class="inner-gallery">
+          <div class="inner-img">KAI Key Visual</div>
+          <div class="inner-img">AURA Key Visual</div>
+          <div class="inner-img">Group Shot</div>
+          <div class="inner-img">Concept Sketch</div>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <script>
+  (function(){
+    const btns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.toy-card');
+    const countEl = document.getElementById('filter-count');
+    function updateCount(filter){
+      const n = filter === 'all'
+        ? cards.length
+        : [...cards].filter(c => c.dataset.type === filter).length;
+      countEl.textContent = n + ' item' + (n !== 1 ? 's' : '');
+    }
+    updateCount('all');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        cards.forEach(card => {
+          const show = f === 'all' || card.dataset.type === f;
+          card.classList.toggle('hidden', !show);
+          if(!show && card.open) card.open = false;
+        });
+        updateCount(f);
+      });
+    });
+  })();
+  </script>
+
+  <!-- ④ EXHIBITIONS (full width, no media) -->
+  <!-- CTA -->
+  <div class="eyebrow fu fu-4" style="align-self:flex-start;">Get Involved</div>
+  <section class="fu fu-4">
+    <div class="cta-box">
+      <span class="cta-num">Collab</span>
+      <div class="cta-h3">Collab</div>
+      <p class="cta-p">品牌聯名 / 展覽合作 / 藝術家企劃，歡迎來信洽談。</p>
+      <a href="#" class="cta-btn">Contact Us ↗</a>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

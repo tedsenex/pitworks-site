@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="./lang.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#ffffff;color:#141414;font-family:'DM Mono','Noto Sans TC',monospace;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.022) 3px,rgba(0,0,0,.022) 4px);pointer-events:none;z-index:9999;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  a{color:inherit;}
+  @media (max-width:900px){
+    .rwd-split{grid-template-columns:1fr !important;}
+    .rwd-3{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:600px){
+    .rwd-3{grid-template-columns:1fr !important;}
+    .rwd-2{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<nav style="position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid #e8e8e5;">
+  <a href="index.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="width:9px;height:9px;border-radius:2px;background:#ff3b3b;display:inline-block;"></span>
+    <span style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.14em;color:#141414;">PITWORKS</span>
+  </a>
+  <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+    <a href="index.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">HOME</a>
+    <a href="ip.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#02579a;text-decoration:none;padding:8px 14px;border-radius:6px;background:rgba(3,119,212,.1);border:1px solid rgba(3,119,212,.35);">IP FIGURES</a>
+    <a href="vehicles.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">VEHICLES</a>
+    <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 14px;border-radius:6px;background:#ff3b3b;display:inline-flex;align-items:center;gap:6px;transition:box-shadow .25s;" style-hover="box-shadow:0 4px 16px rgba(255,59,59,.4);">SHOP <span style="font-size:.7rem;">↗</span></a>
+    <a href="contact.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">CONTACT</a>
+    <button onClick="{{ toggleLang }}" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.08em;color:#141414;padding:8px 14px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;transition:all .25s;margin-left:4px;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ langLabel }}</button>
+  </div>
+</nav>
+
+<div style="max-width:1320px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:20px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:#f6f6f3;border:1px solid #e8e8e5;border-radius:10px;font-family:'DM Mono',monospace;font-size:.7rem;color:#8a8a8a;letter-spacing:.06em;">
+    <div style="display:flex;align-items:center;gap:10px;"><span style="width:6px;height:6px;border-radius:50%;background:#1db954;animation:blink 2.2s infinite;display:inline-block;"></span><span>IP Module Loaded — PITWORKS DESIGN</span></div>
+    <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.14em;">Original IP // Toy Division</span>
+  </div>
+
+  <header class="rwd-split" style="display:grid;grid-template-columns:1fr 2fr;gap:0;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;min-height:320px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+    <div style="background:#02579a;padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;" style-after="content:'IP';font-family:'Orbitron',sans-serif;font-size:10rem;font-weight:900;color:rgba(0,0,0,.1);position:absolute;bottom:-30px;right:-20px;pointer-events:none;letter-spacing:-.04em;line-height:1;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#ffd0d0;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);border-radius:4px;padding:4px 10px;background:rgba(0,0,0,.2);margin-bottom:20px;"><span style="width:6px;height:6px;border-radius:50%;background:#ff3b3b;display:inline-block;"></span>Original IP</div>
+        <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2rem,3.2vw,3rem);font-weight:900;text-transform:uppercase;line-height:1.05;letter-spacing:.04em;color:#fff;position:relative;z-index:1;">IP //<br>DESIGN<br>TOYS</h1>
+      </div>
+      <div style="position:relative;z-index:1;"><p style="font-family:'DM Mono',monospace;font-size:.95rem;color:rgba(255,255,255,.75);line-height:1.8;margin-top:18px;">{{ heroDesc }}</p></div>
+    </div>
+    <div style="background:#050505;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <img src="https://i.pinimg.com/736x/89/a2/83/89a283e63782dabb05b52b6fe3755608.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+  </header>
+
+  <div style="align-self:flex-start;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#8a8a8a;letter-spacing:.22em;text-transform:uppercase;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;background:#f6f6f3;">IP Concept</div>
+
+  <div class="rwd-split" style="border:1px solid #e8e8e5;border-radius:16px;background:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr auto;gap:0;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+    <div style="padding:36px 40px;position:relative;z-index:1;">
+      <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#0377d4;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(3,119,212,.3);border-radius:4px;padding:4px 10px;background:#eff6fc;margin-bottom:18px;">World Overview</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,2vw,1.5rem);font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.3;margin-bottom:16px;max-width:640px;color:#141414;">{{ worldTitle }}</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.95rem;color:#666;line-height:1.85;max-width:600px;">{{ worldDesc }}</p>
+    </div>
+    <div style="display:flex;align-items:stretch;border-left:1px solid #e8e8e5;position:relative;z-index:1;">
+      <div style="padding:0 36px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;border-right:1px solid #e8e8e5;"><span style="font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:700;color:#141414;line-height:1;">06</span><span style="font-family:'DM Mono',monospace;font-size:.6rem;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;">Characters</span></div>
+      <div style="padding:0 36px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;border-right:1px solid #e8e8e5;"><span style="font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:700;color:#141414;line-height:1;">12+</span><span style="font-family:'DM Mono',monospace;font-size:.6rem;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;">Variants</span></div>
+      <div style="padding:0 36px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;"><span style="font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:700;color:#141414;line-height:1;">2021</span><span style="font-family:'DM Mono',monospace;font-size:.6rem;color:#8a8a8a;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;">Est.</span></div>
+    </div>
+  </div>
+
+  <section class="rwd-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div style="border:1px solid #e8e8e5;border-radius:16px;padding:32px 34px;background:#fff;position:relative;overflow:hidden;transition:border-color .25s;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <span style="display:inline-block;font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.18em;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;color:#8a8a8a;text-transform:uppercase;margin-bottom:18px;align-self:flex-start;">Philosophy</span>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px;color:#141414;">{{ philoTitle }}</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:#666;line-height:1.85;">{{ philoDesc }}</p>
+    </div>
+    <div style="border:1px solid #e8e8e5;border-radius:16px;padding:32px 34px;background:#fff;position:relative;overflow:hidden;transition:border-color .25s;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <span style="display:inline-block;font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.18em;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;color:#8a8a8a;text-transform:uppercase;margin-bottom:18px;align-self:flex-start;">Origin</span>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px;color:#141414;">{{ originTitle }}</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:#666;line-height:1.85;">{{ originDesc }}</p>
+    </div>
+  </section>
+
+  <div class="rwd-split" style="border:1px solid #e8e8e5;border-radius:16px;background:#fff;display:grid;grid-template-columns:260px 1fr;overflow:hidden;position:relative;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+    <div style="background:#080808;border-right:1px solid #e8e8e5;display:flex;align-items:flex-end;position:relative;overflow:hidden;min-height:300px;" style-after="content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);pointer-events:none;z-index:1;">
+      <img src="https://i.pinimg.com/736x/d0/f6/c9/d0f6c95f822821399f4ecb467f46a372.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      <div style="position:relative;z-index:2;padding:16px 18px;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;color:#fff;text-transform:uppercase;">PITWORKS</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.8rem;color:#c9ccce;margin-top:4px;">Designer / Founder</div>
+      </div>
+    </div>
+    <div style="padding:36px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1;">
+      <div style="display:inline-flex;align-self:flex-start;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#0377d4;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(3,119,212,.3);border-radius:4px;padding:4px 10px;background:#eff6fc;">Designer Story</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:clamp(.9rem,1.4vw,1.15rem);font-weight:700;line-height:1.4;letter-spacing:.02em;color:#141414;max-width:520px;">{{ storyTitle }}</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:#666;line-height:1.9;max-width:560px;">{{ storyDesc }}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#f0f0ed;color:#6c7478;border:1px solid #e2e2df;">{{ tagCustomizer }}</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#eff6fc;color:#0377d4;border:1px solid rgba(3,119,212,.3);">IP Creator</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#f0f0ed;color:#6c7478;border:1px solid #e2e2df;">{{ tagSculpt }}</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;background:#ff3b3b;color:#fff;">{{ tagMade }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rwd-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div style="border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;background:#fff;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <div style="padding:18px 22px 16px;border-bottom:1px solid #e8e8e5;display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#141414;">Photo Works</span><span style="font-family:'DM Mono',monospace;font-size:.65rem;color:#8a8a8a;">12 items</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e8e8e5;">
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/32/5c/9f/325c9f0aa5bc5166efca6037ef349603.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/35/b2/82/35b28276191ade182f4de778532a62aa.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/f7/04/a3/f704a3cf008c28df12d06b29a35c2b74.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/35/70/9c/35709cd26848a1b85a7ecc99b3dbcd1d.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+    <div style="border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;background:#fff;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+      <div style="padding:18px 22px 16px;border-bottom:1px solid rgba(255,59,59,.25);display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#ff3b3b;">Illustration Works</span><span style="font-family:'DM Mono',monospace;font-size:.65rem;color:#8a8a8a;">08 items</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e8e8e5;">
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/ef/8d/58/ef8d58b7cc0b52247206f4f944f84fb8.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/af/64/b6/af64b608e833f07f309c5ecee09671cc.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/1b/e3/97/1be397b74d83ad79b1a61ef12addd896.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div style="background:#f0f0ed;aspect-ratio:4/3;overflow:hidden;"><img src="https://i.pinimg.com/736x/88/d5/8a/88d58aba20e6189ff771bdaa4c330ae6.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div style="font-family:'Orbitron',sans-serif;font-size:.52rem;color:#0377d4;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(3,119,212,.3);border-radius:4px;padding:4px 10px;background:#eff6fc;">Works</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+        <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+      </sc-for>
+      <span style="font-family:'DM Mono',monospace;font-size:.62rem;color:#8a8a8a;margin-left:auto;letter-spacing:.06em;">{{ countText }}</span>
+    </div>
+  </div>
+
+  <div class="rwd-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <sc-for list="{{ visibleToys }}" as="toy" hint-placeholder-count="4">
+      <div style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;position:relative;transition:border-color .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;">
+        <div onClick="{{ toy.toggle }}" style="{{ toy.coverStyle }}" style-after="content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);pointer-events:none;">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.2em;color:#333;text-transform:uppercase;">{{ toy.coverText }}</div>
+          <div style="position:relative;z-index:2;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span style="{{ toy.tag1Style }}">{{ toy.tag1 }}</span>
+                <span style="{{ toy.tag2Style }}">{{ toy.tag2 }}</span>
+              </div>
+              <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,2.2vw,2rem);font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1.1;color:#fff;">{{ toy.title }}</h2>
+            </div>
+            <div style="{{ toy.expandStyle }}">{{ toy.expandLabel }}</div>
+          </div>
+        </div>
+        <sc-if value="{{ toy.open }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fafafa;border-top:1px solid #e8e8e5;padding:28px 30px;position:relative;">
+            <div style="margin-bottom:22px;">
+              <span style="font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.18em;color:#7c8488;text-transform:uppercase;margin-bottom:10px;display:block;">{{ toy.label }}</span>
+              <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+                <span style="font-family:'Orbitron',sans-serif;font-size:.62rem;letter-spacing:.08em;color:#141414;background:#fff;border:1px solid #e2e2df;border-radius:20px;padding:5px 14px;">{{ toy.yearLabel }}: {{ toy.year }}</span>
+                <span style="font-family:'Orbitron',sans-serif;font-size:.62rem;letter-spacing:.08em;color:#141414;background:#fff;border:1px solid #e2e2df;border-radius:20px;padding:5px 14px;">{{ toy.qtyLabel }}: {{ toy.qty }}</span>
+              </div>
+              <p style="font-family:'DM Mono',monospace;font-size:.95rem;color:#444;line-height:1.8;max-width:760px;">{{ toy.desc }}</p>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:0 -30px -28px;">
+              <sc-for list="{{ toy.galleryItems }}" as="g" hint-placeholder-count="4">
+                <div style="{{ g.style }}">
+                  <sc-if value="{{ g.isImg }}" hint-placeholder-val="{{ false }}">
+                    <img src="{{ g.src }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  </sc-if>
+                  <sc-if value="{{ g.text }}" hint-placeholder-val="">
+                    <span>{{ g.text }}</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="align-self:flex-start;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#8a8a8a;letter-spacing:.22em;text-transform:uppercase;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;background:#f6f6f3;">{{ getInvolved }}</div>
+  <section class="rwd-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div style="border-radius:16px;padding:32px 28px;background:#ff3b3b;border:1px solid #ff3b3b;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:14px;transition:transform .25s,box-shadow .25s;" style-hover="transform:translateY(-3px);box-shadow:0 10px 26px rgba(255,59,59,.3);">
+      <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.2em;color:rgba(255,255,255,.6);text-transform:uppercase;">01</span>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:#fff;">Collab</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:rgba(255,255,255,.7);line-height:1.7;">{{ collabDesc }}</p>
+      <a href="contact.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 22px;background:#fff;color:#141414;border:1px solid transparent;border-radius:30px;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;margin-top:auto;" style-hover="background:#141414;color:#fff;">{{ contactUs }} ↗</a>
+    </div>
+    <div style="border:1px solid #e8e8e5;border-radius:16px;padding:32px 28px;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:14px;transition:border-color .25s,transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;transform:translateY(-3px);">
+      <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.2em;color:#8a8a8a;text-transform:uppercase;">02</span>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:#141414;">Collect</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:#666;line-height:1.7;">{{ collectDesc }}</p>
+      <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:9px 22px;background:transparent;color:#141414;border:1px solid #cfcfcc;border-radius:30px;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;margin-top:auto;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ goShop }} ↗</a>
+    </div>
+    <div style="border:1px solid #e8e8e5;border-radius:16px;padding:32px 28px;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:14px;transition:border-color .25s,transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-hover="border-color:#cfcfcc;transform:translateY(-3px);">
+      <span style="font-family:'Orbitron',sans-serif;font-size:.52rem;letter-spacing:.2em;color:#8a8a8a;text-transform:uppercase;">03</span>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;color:#141414;">Follow</div>
+      <p style="font-family:'DM Mono',monospace;font-size:.92rem;color:#666;line-height:1.7;">{{ followDesc }}</p>
+      <a href="contact.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 22px;background:transparent;color:#141414;border:1px solid #cfcfcc;border-radius:30px;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;margin-top:auto;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ socialLink }} ↗</a>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'zh', filter: 'all', open: { 't1': true } };
+  componentDidMount() { this.setState({ lang: window.__pitLang ? window.__pitLang.get() : 'zh' }); }
+  t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
+
+  get toys() {
+    const t = this.t.bind(this);
+    return [
+      { id:'t1', type:'original', cover:'https://i.pinimg.com/originals/fb/69/b3/fb69b36c2fb224a6567c2e0fbda52aac.jpg', tag1:'PM-01', tag1k:'show', tag2:'Character', tag2k:'parts', year:t('2021','2021'), qty:t('限量 50 件','Edition of 50'), title:t('PITMAN original v1.0','PITMAN original v1.0'), label:t('款式說明','Style Note'), desc:t('PITWORKS CUSTOM X PITMAN SQUAD','PITWORKS CUSTOM X PITMAN SQUAD'), gallery:['https://i.pinimg.com/originals/fb/69/b3/fb69b36c2fb224a6567c2e0fbda52aac.jpg','https://i.pinimg.com/originals/35/b2/82/35b28276191ade182f4de778532a62aa.jpg','https://i.pinimg.com/originals/af/5b/e9/af5be91c6d95cf09e469ed6b14361dc5.jpg','https://i.pinimg.com/originals/32/5c/9f/325c9f0aa5bc5166efca6037ef349603.jpg'] },
+      { id:'t6', type:'original', tag1:'PM-02', tag1k:'parts', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('限量 10 件','Edition of 10'), title:t('PITMAN RF12 限定版','PITMAN RF12 Limited Edition'), label:t('款式說明','Style Note'), desc:t('RF12 展場限定 PITMAN販售！\n\n販售方式：\n現場&網路販售\n\n數量：5pic','RF12 exhibition-exclusive PITMAN release! Sold on-site & online. Quantity: 5 pieces.'),
+        cover:'https://i.pinimg.com/originals/52/49/12/5249120a355b8228b727e3d0d9a657d7.jpg', gallery:['https://i.pinimg.com/originals/52/49/12/5249120a355b8228b727e3d0d9a657d7.jpg','https://i.pinimg.com/originals/33/fb/11/33fb1155e6743955830bd84eaa1fd6db.jpg','https://i.pinimg.com/originals/bd/71/e2/bd71e25e9d41d2e0230bc4b60f330def.jpg','https://i.pinimg.com/originals/3a/ed/bc/3aedbce64efd34fd52e319a3a45b47f8.jpg'] },
+      { id:'t7', type:'collab', tag1:'PM-03', tag1k:'show', tag2:'Character', tag2k:'red', year:t('2023','2023'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x CloneX「WAGMI」1/1','PITMAN x CloneX "WAGMI" 1/1'), label:t('款式說明','Style Note'), desc:t('1/1-PITMAN x CLONEX // ONE OFF ART FAIR / WIP 📛SOLD📛\n[ 12+7 ]：CloneX TW 12 Disciples + 7 Artists 聯名計畫\nCLONE X × TAKASHI MURAKAMI 項目出自於品牌營運高手RTFKT公司（現隸屬Nike集團），有著村上隆團隊賦予的圖像，完整的授權機制，與持有者一同打造各種生態。','1/1 — PITMAN x CLONEX // ONE OFF ART FAIR / WIP 📛SOLD📛\n[12+7]: CloneX TW 12 Disciples + 7 Artists collab project.\nCLONE X × TAKASHI MURAKAMI — from RTFKT (now under Nike), featuring artwork from Takashi Murakami\'s team with a full licensing system, building an ecosystem together with holders.'),
+        cover:'https://i.pinimg.com/originals/b9/5d/46/b95d46799e5fdc4b7b85e059c86b51fc.jpg', gallery:['https://i.pinimg.com/originals/b9/5d/46/b95d46799e5fdc4b7b85e059c86b51fc.jpg','https://i.pinimg.com/originals/7c/f8/a2/7cf8a23dbcf8a2a47e5064dba4740580.jpg','https://i.pinimg.com/originals/0b/26/25/0b2625eb4ad3b8f8e5515d9ab2910e9a.jpg','https://i.pinimg.com/originals/ac/fa/65/acfa65de20418feea62e256b8bd5a62f.jpg'] },
+      { id:'t8', type:'original', tag1:'PM-04', tag1k:'parts', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('限量 5 件','Edition of 5'), title:t('PITMAN RF13 限定版','PITMAN RF13 Limited Edition'), label:t('款式說明','Style Note'), desc:t('RF13 展場限定 PITMAN販售！\n\n販售方式：\n現場&網路販售\n\n數量：5pic','RF13 exhibition-exclusive PITMAN release! Sold on-site & online. Quantity: 5 pieces.'),
+        cover:'https://i.pinimg.com/originals/7e/e6/63/7ee663e8775144f5251760ea5bfb9781.jpg', gallery:['https://i.pinimg.com/originals/7e/e6/63/7ee663e8775144f5251760ea5bfb9781.jpg','https://i.pinimg.com/originals/aa/4d/10/aa4d10f8c87160fc421efa10e897f2c8.jpg','https://i.pinimg.com/originals/b3/29/f3/b329f3d28a3a91188d6b480994ddfa07.jpg','https://i.pinimg.com/originals/77/b8/a4/77b8a4ba12239e277e138398cb319e60.jpg'] },
+      { id:'t9', type:'original', tag1:'PM-05', tag1k:'red', tag2:'Character', tag2k:'grey', year:t('2023','2023'), qty:t('限量 10 件','Edition of 10'), title:t('PITMAN 2023 Final 限定版「零」','PITMAN 2023 Final Limited Edition "Zero"'), label:t('款式說明','Style Note'), desc:t('2023 final 限定款','2023 year-end limited release.'),
+        cover:'https://i.pinimg.com/originals/2f/0b/d8/2f0bd875c0b5c24ff2ca25be5a60c847.jpg', gallery:['https://i.pinimg.com/originals/48/0b/e1/480be156049b7b459637c4b0647f4df9.jpg','https://i.pinimg.com/originals/c6/99/57/c6995730c9f178fd94ace0a8892fff9a.jpg','https://i.pinimg.com/originals/2f/0b/d8/2f0bd875c0b5c24ff2ca25be5a60c847.jpg','https://i.pinimg.com/originals/a1/05/9e/a1059ec9045df2bb1d111f8db106cf94.jpg'] },
+      { id:'t10', type:'collab', tag1:'PM-06', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2020','2020'), qty:t('限量 1 件','Edition of 1'), title:t('PITMAN Free Biker 雜誌限定版','PITMAN Free Biker Magazine Edition'), label:t('款式說明','Style Note'), desc:t('free biker 雜誌限定款','Free Biker magazine limited-edition release.'),
+        cover:'https://i.pinimg.com/originals/ba/34/40/ba344047c480c6707728d50f51ebb3cb.jpg', gallery:['https://i.pinimg.com/originals/ba/34/40/ba344047c480c6707728d50f51ebb3cb.jpg'] },
+      { id:'t11', type:'collab', tag1:'PM-07', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x FREAK WHEELS 1/1','PITMAN x FREAK WHEELS 1/1'), label:t('款式說明','Style Note'), desc:t('2021 PITWORKS SPACE STATION 創作展 ONE-OFF聯名\nSam - FREAK WHEELS\n深受Lowbrow Art低眉藝術影響，善於使用繪噴及雕塑方式來創作角色，並用怪異又帶有生動的表情來創作出充滿怪奇幽默的怪獸宇宙。','2021 PITWORKS SPACE STATION exhibition ONE-OFF collab.\nSam – FREAK WHEELS\nDeeply influenced by Lowbrow Art, skilled in spray-paint and sculptural character creation, crafting a monster universe full of strange humor through vivid, offbeat expressions.'),
+        cover:'https://i.pinimg.com/originals/5b/20/55/5b2055f82aa41ba6c6f5015a9ea2578e.jpg', gallery:['https://i.pinimg.com/originals/f8/ea/b0/f8eab04f80ba284bb861500ff6bcf935.jpg','https://i.pinimg.com/originals/e2/5d/8e/e25d8e3b0af13dacb8c6ba04ec63e0a2.jpg','https://i.pinimg.com/originals/5b/20/55/5b2055f82aa41ba6c6f5015a9ea2578e.jpg','https://i.pinimg.com/originals/de/c0/52/dec052a8e0d90d62707ba31f32bb6e1f.jpg','uploads/pasted-1783919685995-0.png'] },
+      { id:'t12', type:'collab', tag1:'PM-08', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x Long Road 漫漫長路 1/1','PITMAN x Long Road 1/1'), label:t('款式說明','Style Note'), desc:t('2021 PITWORKS SPACE STATION 創作展 ONE-OFF聯名\nLong Road 漫漫長路\n因為自己喜歡騎車，對每個熱愛騎車的人來說都有一條騎不完的慢慢長路就像畫圖一樣需要用時間發酵。平面以美式風格融合中式文化為主，偶爾會出復古車、老車相關實體商品或零件。','2021 PITWORKS SPACE STATION exhibition ONE-OFF collab.\nLong Road\nBecause he loves riding, every rider has an endless long road ahead — much like drawing, it takes time to ferment. The style blends American aesthetics with Chinese culture, occasionally releasing vintage-bike-related merch or parts.'),
+        cover:'https://i.pinimg.com/originals/5a/c5/99/5ac59953963e0a3762c819372bae2346.jpg', gallery:['https://i.pinimg.com/originals/1e/45/21/1e4521d44a8c2bdedd99abe47cb31b33.jpg','https://i.pinimg.com/originals/5a/c5/99/5ac59953963e0a3762c819372bae2346.jpg'] },
+      { id:'t13', type:'collab', tag1:'PM-09', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x Jeffrey\'s Finishing 大飛彩繪 1/1','PITMAN x Jeffrey\'s Finishing 1/1'), label:t('款式說明','Style Note'), desc:t('2021 PITWORKS SPACE STATION 創作展 ONE-OFF聯名\nJeffrey\'s finishing 大飛彩繪\n相信不需要我多做介紹，國際級的彩繪界大師，曾獲日本橫濱車展大獎，擅長將嶄新物品賦予復古元素，呈現出不同的美感與層次。發展出具自我風格和新價值之作品。而本次的聯名中也帶入了全新安全帽品牌3-J.F.T HELMETS的眾多元素。大師作品不容錯過🥵','2021 PITWORKS SPACE STATION exhibition ONE-OFF collab.\nJeffrey\'s Finishing\nAn internationally acclaimed painting master, winner of a Yokohama Motorcycle Show award, known for infusing new objects with vintage flair. This collab also introduces elements from the new helmet brand 3-J.F.T HELMETS. A must-see masterpiece.'),
+        cover:'https://i.pinimg.com/originals/31/0d/ae/310dae522b4d7372d807f4082495e6b1.jpg', gallery:['https://i.pinimg.com/originals/7b/87/83/7b878397f0e71f8de314e6efcdd97c11.jpg','https://i.pinimg.com/originals/31/0d/ae/310dae522b4d7372d807f4082495e6b1.jpg','https://i.pinimg.com/originals/cf/43/35/cf4335125247bd5c56382bc42a39be09.jpg'] },
+      { id:'t15', type:'collab', tag1:'PM-10', tag1k:'red', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x 3STUDIO x LAUMOWORKS 1/1','PITMAN x 3STUDIO x LAUMOWORKS 1/1'), label:t('款式說明','Style Note'), desc:t('三方聯名 PITMAN×3STUDIO×LAUMOWORKS','Tri-brand collaboration: PITMAN × 3STUDIO × LAUMOWORKS.'),
+        cover:'https://i.pinimg.com/originals/58/6b/a8/586ba8a8490a8b6a1bc110bea15559e9.jpg', gallery:['https://i.pinimg.com/originals/58/6b/a8/586ba8a8490a8b6a1bc110bea15559e9.jpg'] },
+      { id:'t16', type:'collab', tag1:'PM-11', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2021','2021'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN x Ted 主理人聯名 1/1','PITMAN x Ted Founder\'s Collab 1/1'), label:t('款式說明','Style Note'), desc:t('pitworks 主理人ted 聯名款','PITWORKS founder Ted\'s collaboration edition.'),
+        cover:'https://i.pinimg.com/originals/6c/3a/35/6c3a357f4f7e4e2c2e303f6d0bd6342c.jpg', gallery:['https://i.pinimg.com/originals/6c/3a/35/6c3a357f4f7e4e2c2e303f6d0bd6342c.jpg'] },
+      { id:'t17', type:'original', tag1:'PM-12', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITSHARK v1.0','PITSHARK v1.0'), label:t('款式說明','Style Note'), desc:t('PITWORKS universes 支線系列，第二號角色 PITSHARK aka 鯊ㄆㄧㄚˇ的ㄆㄧㄚˇ眼鯊就是寄居在每個工廠，永遠都找不到工具永遠都會把工具亂丟的那號角色。特殊技能除了翻工廠的冰箱蹭東西吃之外毫無用處。快分享此鯊給你那無用的朋友吧😊','A spin-off character in the PITWORKS universe — character #2, PITSHARK, the squinty-eyed shark who lurks in every factory, never able to find his tools and always leaving them scattered around. His only special skill (besides raiding the factory fridge for snacks) is being otherwise entirely useless. Share this shark with your equally useless friends.'),
+        cover:'https://i.pinimg.com/originals/d4/e5/de/d4e5de2bbc57e1d78cbef339c463734e.jpg', gallery:['https://i.pinimg.com/originals/d4/e5/de/d4e5de2bbc57e1d78cbef339c463734e.jpg','https://i.pinimg.com/originals/a3/a4/19/a3a419715f7a7c74323bbc2d67729be6.jpg','https://i.pinimg.com/originals/0c/95/f5/0c95f510dadd8822f05e4f54fa2b8122.jpg','https://i.pinimg.com/originals/dd/46/a8/dd46a879e57b73d8c1215e989eb1a8c4.jpg'] },
+      { id:'t18', type:'original', tag1:'PM-13', tag1k:'parts', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN Gallery Series 1/1 – Gold Circuit','PITMAN Gallery Series 1/1 – Gold Circuit'), label:t('款式說明','Style Note'), desc:t('1/1-PITMAN GALLERY SERIES / WIP','1/1 — PITMAN Gallery Series / WIP'),
+        cover:'https://i.pinimg.com/originals/15/18/c2/1518c22e3bbd175ccc8a73ec001dfe67.jpg', gallery:['https://i.pinimg.com/originals/15/18/c2/1518c22e3bbd175ccc8a73ec001dfe67.jpg','https://i.pinimg.com/originals/b2/e0/97/b2e097cf0c0a47a96ea09bf14dc60035.jpg','https://i.pinimg.com/originals/68/cc/51/68cc5193c0be04dad64229172be9603a.jpg','https://i.pinimg.com/originals/c4/da/74/c4da74cb9616fe234e7e1010ae952d7a.jpg','https://i.pinimg.com/originals/54/e6/8c/54e68c384d0776c1ad4d25f4b5ece56d.jpg'] },
+      { id:'t19', type:'original', tag1:'PM-14', tag1k:'grey', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN Gallery Series 1/1 – Rainbow PIT','PITMAN Gallery Series 1/1 – Rainbow PIT'), label:t('款式說明','Style Note'), desc:t('1/1-PITMAN GALLERY SERIES / WIP','1/1 — PITMAN Gallery Series / WIP'),
+        cover:'https://i.pinimg.com/originals/b4/c2/46/b4c246d9653d366ccd7e686e98b6fad5.jpg', gallery:['https://i.pinimg.com/originals/b4/c2/46/b4c246d9653d366ccd7e686e98b6fad5.jpg','https://i.pinimg.com/originals/fa/70/2e/fa702efa8cdf0cd9360e2a1dde71892d.jpg','https://i.pinimg.com/originals/f7/bb/cc/f7bbcc2f03c6c1c0ecb63cbe29ad1b6b.jpg','https://i.pinimg.com/originals/68/50/ed/6850edd9b61ac20469de8281120088e0.jpg'] },
+      { id:'t20', type:'original', tag1:'PM-15', tag1k:'red', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('限量 5 件','Edition of 5'), title:t('PITMAN RF11 限定版','PITMAN RF11 Limited Edition'), label:t('款式說明','Style Note'), desc:t('RF11 展場限定 PITMAN販售！','RF11 exhibition-exclusive PITMAN release!'),
+        cover:'https://i.pinimg.com/originals/d0/4c/b7/d04cb7fff05e2f78442a51455b2d3632.jpg', gallery:['https://i.pinimg.com/originals/d0/4c/b7/d04cb7fff05e2f78442a51455b2d3632.jpg','https://i.pinimg.com/originals/04/67/ac/0467acaa39089c8e3cb3c06a8da90c5e.jpg'] },
+      { id:'t22', type:'original', tag1:'PM-16', tag1k:'red', tag2:'Character', tag2k:'grey', year:t('2022','2022'), qty:t('1/1 唯一版','One of One (1/1)'), title:t('PITMAN Gallery Series 1/1 – Purple Scar','PITMAN Gallery Series 1/1 – Purple Scar'), label:t('款式說明','Style Note'), desc:t('1/1-PITMAN GALLERY SERIES / WIP','1/1 — PITMAN Gallery Series / WIP'),
+        cover:'https://i.pinimg.com/originals/e4/13/ed/e413ed141b3fdbc719673f4ade71ac4d.jpg', gallery:['https://i.pinimg.com/originals/82/f4/46/82f4468051e7fe5fb6253741c7034de5.jpg','https://i.pinimg.com/originals/c3/9f/b2/c39fb2277f0aa896b654320146193c03.jpg','https://i.pinimg.com/originals/e4/13/ed/e413ed141b3fdbc719673f4ade71ac4d.jpg','https://i.pinimg.com/originals/be/c9/39/bec9396871490b9f16c60e67f43245e4.jpg'] },
+    ];
+  }
+
+  tagStyle(k) {
+    const base = "font-family:'Orbitron',sans-serif;font-size:.5rem;letter-spacing:.12em;padding:4px 11px;border-radius:4px;text-transform:uppercase;display:inline-block;";
+    if (k === 'show') return base + 'background:#ff3b3b;color:#fff;';
+    if (k === 'parts') return base + 'background:#0d2a44;color:#4aa3e8;border:1px solid rgba(3,119,212,.4);';
+    if (k === 'red') return base + 'background:rgba(255,59,59,.15);color:#ff6b6b;border:1px solid rgba(255,59,59,.4);';
+    return base + 'background:rgba(255,255,255,.12);color:#d8d8d8;border:1px solid rgba(255,255,255,.25);';
+  }
+
+  renderVals() {
+    const t = this.t.bind(this);
+    const { filter, open } = this.state;
+    const btnBase = "font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .25s;";
+    const defs = [
+      { key:'all', label:t('全部','All'), red:false },
+      { key:'collab', label:t('聯名','Collab'), red:true },
+      { key:'original', label:t('原創','Original'), red:false },
+    ];
+    const filters = defs.map(d => {
+      const active = filter === d.key;
+      let s = btnBase;
+      if (active) s += d.red ? 'background:#ff3b3b;border:1px solid #ff3b3b;color:#fff;' : 'background:#02579a;color:#fff;border:1px solid #0377d4;';
+      else s += 'background:#fff;color:#8a8a8a;border:1px solid #e2e2df;';
+      return { label:d.label, style:s, onClick:() => this.setState({ filter:d.key }) };
+    });
+    const visibleToys = this.toys.filter(tt => filter === 'all' || tt.type === filter).map(tt => {
+      const isOpen = !!open[tt.id];
+      const expandBase = "font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;padding:8px 18px;border-radius:20px;flex-shrink:0;white-space:nowrap;cursor:pointer;transition:all .25s;";
+      const expandStyle = isOpen ? expandBase+'background:#fff;color:#000;border:1px solid #fff;' : expandBase+'border:1px solid rgba(255,255,255,.4);color:#e0e0e0;';
+      const isUrl = tt.cover && tt.cover.startsWith('http');
+      const coverStyle = "position:relative;aspect-ratio:1/1;background:#0a0a0a;display:flex;align-items:flex-end;padding:22px 24px;overflow:hidden;cursor:pointer;" + (isUrl ? "background-image:url('"+tt.cover+"');background-size:cover;background-position:center;" : "");
+      const coverText = isUrl ? '' : tt.cover;
+      const galleryItems = tt.gallery.map(g => {
+        const gUrl = g && g.startsWith && g.startsWith('http');
+        return { isImg: gUrl, src: gUrl ? g : '', text: gUrl ? '' : g, style: gUrl ? "background:#eeeeeb;aspect-ratio:4/3;overflow:hidden;border-radius:4px;" : "background:#eeeeeb;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.48rem;letter-spacing:.16em;color:#b0b0ab;text-transform:uppercase;text-align:center;border-radius:4px;" };
+      });
+      return { ...tt, open:isOpen, expandLabel:isOpen?'CLOSE −':'EXPAND +', expandStyle, tag1Style:this.tagStyle(tt.tag1k), tag2Style:this.tagStyle(tt.tag2k), toggle:()=>this.setState(s=>({open:{...s.open,[tt.id]:!s.open[tt.id]}})), coverStyle, coverText, galleryItems, yearLabel:t('發售年分','Release Year'), qtyLabel:t('數量','Quantity') };
+    });
+    const n = visibleToys.length;
+    return {
+      langLabel: this.state.lang === 'zh' ? 'EN' : '中文',
+      toggleLang: () => { const nn = window.__pitLang.toggle(); this.setState({ lang: nn }); },
+      heroDesc: t('將街頭改裝文化與近未來科技結合，打造具備實體化展示與數位資產價值的原創角色與潮流玩具收藏。','Merging street custom culture with near-future tech to create original characters and designer toy collectibles with both physical presence and digital asset value.'),
+      worldTitle: t('近未來地下城市——\n速度、鋼鐵與反叛的宇宙觀','Near-Future Underground City —\nSpeed, Steel & Rebellion'),
+      worldDesc: t('PITWORKS IP 宇宙設定於 2049 年的架空亞洲城市。在這裡，國家監管的賽道已被廢棄，地下車隊在廢棄工業區發展出自成一格的速度文化。每位角色都是這個世界裡某個「崗位」的具象化——技師、駭客、嚮導、獵人——彼此對立又相依存。','The PITWORKS IP universe is set in a fictional Asian metropolis in 2049. State-regulated tracks have been abandoned; underground crews have forged their own speed culture in derelict industrial zones. Each character embodies a "role" in this world — mechanic, hacker, guide, hunter — rivals and allies in equal measure.'),
+      philoTitle: t('IP 理念','IP Philosophy'),
+      philoDesc: t('我們創造的不是單純的公仔，而是乘載賽博龐克精神的「街頭載體」。每一個角色都代表著一種對未來移動方式的叛逆想像，將冷硬的金屬與擬人化的性格完美融合。','We don\'t make simple figures — we create "street vessels" carrying cyberpunk spirit. Each character embodies a rebellious vision of future mobility, fusing cold metal with anthropomorphic personality.'),
+      originTitle: t('設計來源','Design Origin'),
+      originDesc: t('靈感汲取自 90 年代 JDM 改裝文化、機能服飾 Techwear 與末日科幻美學。角色的裝甲、面罩與服裝細節，皆對應著我們真實開發的車體改裝套件。','Drawing from 90s JDM custom culture, techwear fashion, and post-apocalyptic sci-fi aesthetics. Every armor piece, visor, and garment detail maps to a real body-kit component we develop.'),
+      storyTitle: t('從車庫焊機到國際展覽——\n一個改裝師如何做出自己的角色 IP','From Garage Welder to International Exhibitions —\nHow a Customizer Built His Own Character IP'),
+      storyDesc: t('PITWORKS 的創辦人從事機車改裝超過十年，習慣用雙手解決問題。2019 年，他開始把幾個常在工作台旁轉悠的「假想角色」畫下來——那些戴著焊接面罩、身穿機能背心的人物，其實都是他自己在不同崗位上的投影。\n\n第一個原型公仔用熟石膏翻模、手塗丙烯，做完就擺在工具箱上。沒想到朋友看了問能不能買。後來是展覽、媒體報導、授權合作，一步步走到現在。他說自己從沒想過做玩具，只是想把腦子裡的東西弄出來。','The founder of PITWORKS has been customizing motorcycles for over a decade — solving problems with his hands. In 2019, he started sketching the "imaginary characters" that lingered around his workbench — figures in welding visors and tech vests, each a projection of himself at different stations.\n\nThe first prototype was cast in plaster, hand-painted with acrylics, and set on the toolbox. A friend saw it and asked to buy one. Then came exhibitions, press coverage, licensing deals — one step at a time. He says he never planned to make toys; he just wanted to get the ideas out of his head.'),
+      tagCustomizer: t('改裝師','Customizer'),
+      tagSculpt: t('自學雕塑','Self-taught Sculptor'),
+      tagMade: t('台灣製造','Made in Taiwan'),
+      getInvolved: t('參與我們','Get Involved'),
+      collabDesc: t('品牌聯名 / 展覽合作 / 藝術家企劃，歡迎來信洽談。','Brand collabs / exhibition partnerships / artist projects — reach out anytime.'),
+      contactUs: t('聯絡我們','Contact Us'),
+      collectDesc: t('公仔、模型與周邊皆於官方商店販售，數量有限。','Figures, models & merch available at the official store — limited quantities.'),
+      goShop: t('前往商店','Go to Shop'),
+      followDesc: t('追蹤社群，第一時間掌握新作與展覽資訊。','Follow our socials for the latest drops and exhibition news.'),
+      socialLink: t('社群連結','Socials'),
+      filters, visibleToys, countText: n + (n !== 1 ? ' items' : ' item'),
+    };
+  }
+}
+</script>
+</body>
+</html>

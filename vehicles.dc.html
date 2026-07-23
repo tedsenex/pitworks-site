@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="./lang.js"></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#ffffff;color:#141414;font-family:'DM Mono','Noto Sans TC',monospace;font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.022) 3px,rgba(0,0,0,.022) 4px);pointer-events:none;z-index:9999;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  a{color:inherit;}
+  @media (max-width:900px){
+    .rwd-4{grid-template-columns:1fr 1fr !important;}
+    .rwd-3{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:600px){
+    .rwd-4{grid-template-columns:1fr !important;}
+    .rwd-3{grid-template-columns:1fr !important;}
+    .rwd-2{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<nav style="position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid #e8e8e5;">
+  <a href="index.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="width:9px;height:9px;border-radius:2px;background:#ff3b3b;display:inline-block;"></span>
+    <span style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.14em;color:#141414;">PITWORKS</span>
+  </a>
+  <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+    <a href="index.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">HOME</a>
+    <a href="ip.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">IP FIGURES</a>
+    <a href="vehicles.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#02579a;text-decoration:none;padding:8px 14px;border-radius:6px;background:rgba(3,119,212,.1);border:1px solid rgba(3,119,212,.35);">VEHICLES</a>
+    <a href="https://cosmosdepot.my1shop.com/categories/all" target="_blank" rel="noopener" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 14px;border-radius:6px;background:#ff3b3b;display:inline-flex;align-items:center;gap:6px;transition:box-shadow .25s;" style-hover="box-shadow:0 4px 16px rgba(255,59,59,.4);">SHOP <span style="font-size:.7rem;">↗</span></a>
+    <a href="contact.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">CONTACT</a>
+    <button onClick="{{ toggleLang }}" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.08em;color:#141414;padding:8px 14px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;transition:all .25s;margin-left:4px;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ langLabel }}</button>
+  </div>
+</nav>
+
+<div style="max-width:1320px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:24px;">
+
+  <header style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;padding:44px 40px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);" style-after="content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle at top right,rgba(2,87,154,.1) 0%,transparent 65%);pointer-events:none;">
+    <p style="font-family:'Orbitron',sans-serif;font-size:.6rem;color:#0377d4;letter-spacing:.25em;text-transform:uppercase;margin-bottom:12px;">PITWORKS MOTORSPORT DIVISION // 2024</p>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:.03em;line-height:1;position:relative;z-index:1;margin-bottom:14px;color:#141414;">PROJECT VEHICLES</h1>
+    <p style="font-size:.8rem;color:#666;max-width:520px;position:relative;z-index:1;letter-spacing:.03em;">{{ headerDesc }}</p>
+    <div style="display:flex;gap:32px;margin-top:28px;position:relative;z-index:1;">
+      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">4</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Total Builds</span></div>
+      <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
+      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">3</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Show Cars</span></div>
+      <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
+      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">1</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Parts Series</span></div>
+    </div>
+  </header>
+
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e8e8e5;border-radius:50px;padding:10px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+    <span style="font-family:'Orbitron',sans-serif;font-size:.58rem;color:#8a8a8a;letter-spacing:.2em;margin-right:4px;white-space:nowrap;">Filter:</span>
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+      <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }} <span style="{{ f.cntStyle }}">{{ f.count }}</span></button>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <sc-for list="{{ visibleVehicles }}" as="v" hint-placeholder-count="4">
+      <div style="{{ v.cardStyle }}">
+        <div onClick="{{ v.toggle }}" style="{{ v.coverStyle }}">
+          <span style="position:absolute;top:50%;right:-8px;transform:translateY(-50%);font-family:'Orbitron',sans-serif;font-size:9rem;font-weight:900;color:rgba(255,255,255,.04);pointer-events:none;line-height:1;">{{ v.num }}</span>
+          <span style="{{ v.catStyle }}">{{ v.catLabel }}</span>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:72%;background:linear-gradient(to top,rgba(0,0,0,.92),transparent);pointer-events:none;"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:22px 26px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;">
+            <div>
+              <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(1.3rem,2.8vw,2rem);font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin-bottom:10px;line-height:1.1;">{{ v.title }}</h2>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ v.tags }}" as="t" hint-placeholder-count="3">
+                  <span style="{{ t.style }}">{{ t.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="{{ v.toggleStyle }}">
+              <span style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.15em;color:#d8d8d8;">{{ v.toggleLabel }}</span>
+            </div>
+          </div>
+        </div>
+        <sc-if value="{{ v.open }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:26px;border-top:1px solid #e8e8e5;background:#fafafa;">
+            <sc-if value="{{ v.desc }}" hint-placeholder-val="">
+              <div style="margin-bottom:20px;padding:16px 18px;background:#fff;border:1px solid #e8e8e5;border-radius:10px;border-left:3px solid #0377d4;">
+                <p style="font-size:.95rem;color:#555;letter-spacing:.02em;line-height:1.75;">{{ v.desc }}</p>
+              </div>
+            </sc-if>
+            <div class="rwd-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;">
+              <sc-for list="{{ v.gallery }}" as="g" hint-placeholder-count="3">
+                <div style="{{ g.style }}">{{ g.text }}</div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ v.hasSpecs }}" hint-placeholder-val="{{ false }}">
+              <div class="rwd-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;">
+                <sc-for list="{{ v.specs }}" as="sp" hint-placeholder-count="2">
+                  <div style="background:#fff;border:1px solid #e8e8e5;border-radius:12px;padding:18px;transition:border-color .25s;" style-hover="border-color:#cfcfcc;">
+                    <h4 style="font-family:'Orbitron',sans-serif;font-size:.72rem;color:#7c8488;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #e8e8e5;">{{ sp.h4 }}</h4>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+                      <sc-for list="{{ sp.items }}" as="it" hint-placeholder-count="4">
+                        <li style="font-size:.9rem;color:#444;padding-left:16px;position:relative;letter-spacing:.02em;line-height:1.6;"><span style="position:absolute;left:0;color:#0377d4;font-size:1.1rem;line-height:1.3;">›</span>{{ it }}</li>
+                      </sc-for>
+                    </ul>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div class="rwd-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+              <sc-for list="{{ v.details }}" as="d" hint-placeholder-count="4">
+                <div style="{{ d.style }}">{{ d.text }}</div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ v.source }}" hint-placeholder-val="">
+              <div style="margin-top:16px;text-align:right;">
+                <a href="{{ v.source }}" target="_blank" rel="noopener" style="font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.15em;color:#8a8a8a;text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:#0377d4;">{{ sourceLabel }} ↗</a>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:16px;font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.14em;color:#8a8a8a;text-transform:uppercase;padding-top:4px;">
+    <span style="width:6px;height:6px;border-radius:50%;background:#1db954;flex-shrink:0;animation:blink 2.2s infinite;"></span>
+    <span>PITWORKS GARAGE // SYSTEM ONLINE</span>
+    <span style="margin-left:auto;opacity:.5;">V 2.5.0</span>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'zh', filter: 'all', open: { 'v0': true } };
+  componentDidMount() { this.setState({ lang: window.__pitLang ? window.__pitLang.get() : 'zh' }); }
+  t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
+
+  tagStyle(k) {
+    const base = "font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;padding:4px 11px;border-radius:4px;";
+    if (k === 'show') return base + 'background:#ff3b3b;color:#fff;';
+    if (k === 'parts') return base + 'background:#0d2a44;color:#4aa3e8;border:1px solid rgba(3,119,212,.4);';
+    if (k === 'aero') return base + 'background:rgba(255,255,255,.12);color:#d8d8d8;border:1px solid rgba(255,255,255,.25);';
+    return base + 'background:transparent;color:#d8d8d8;border:1px solid rgba(255,255,255,.3);';
+  }
+  thumb(url, text, ar, radius) {
+    let s = "aspect-ratio:" + ar + ";border-radius:" + radius + ";border:1px solid #e8e8e5;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;letter-spacing:.1em;color:#b0b0ab;text-transform:uppercase;cursor:pointer;transition:border-color .25s;overflow:hidden;";
+    if (url) s += "background-image:url('" + url + "');background-size:cover;background-position:center;";
+    else s += 'background:#eeeeeb;font-size:.52rem;';
+    return { style: s, text: url ? '' : text };
+  }
+
+  get vehicles() {
+    const t = this.t.bind(this);
+    return [
+      { id:'v0', cat:'show-car', num:'01', catLabel:'SHOW CAR', catK:'show', cover:'https://i.pinimg.com/1200x/3d/2f/02/3d2f02fbdb6d57474b4e1c1d90cbd250.jpg',
+        title:t('藍色幽靈 // YAMAHA R1','BLUE GHOST // YAMAHA R1'), tags:[['SHOW CAR','show'],['STREET FIGHTER','aero'],[t('台北製造','MADE IN TAIPEI'),'stance']],
+        desc:t('由台北 Pit Works Design 的 Ted Lee 打造，以 1998 Yamaha YZF-R1 為基礎，靈感來自經典小精靈遊戲中的藍色幽靈「Inky」。全車以 3D 列印、CNC 加工與碳纖維複合材料為核心，徹底重塑車體美學。','Built by Ted Lee of Pit Works Design, Taipei. Based on the 1998 Yamaha YZF-R1, inspired by Pac-Man\'s blue ghost "Inky." The entire body is reimagined through 3D printing, CNC machining, and carbon fiber composites.'),
+        gallery:['https://i.pinimg.com/736x/69/be/fb/69befbf3f3309183bb3f638342299a0b.jpg','https://i.pinimg.com/736x/26/84/35/26843547e24d99d761593441aed517ff.jpg','https://i.pinimg.com/736x/33/9c/cf/339ccfdfb3baf08e603700b40f94d156.jpg'],
+        specs:[{h4:t('外觀 // EXTERIOR','EXTERIOR'),items:t(['油箱裁切縮短比例，外覆訂製鋼製油箱','鑄鋁加油口蓋（仿耐久賽復古造型）','透明導流罩：感光環氧樹脂 3D 列印，拋光透明上漆','全新方形鋼製副車架（CAD 建模 + 傳統金屬成型）','主色青藍配色，致敬 Pac-Man 幽靈 Inky'],['Shortened tank profile with custom steel tank cover','Cast aluminum fuel cap (endurance-racing retro style)','Transparent cowl: SLA 3D-printed epoxy resin, polished clear coat','New square-tube steel subframe (CAD + traditional metalwork)','Teal-blue colorway, tribute to Pac-Man ghost Inky'])},{h4:t('性能 // CUSTOM PARTS','PERFORMANCE // CUSTOM PARTS'),items:t(['碳纖維上三角台 + Koso 儀錶整合座艙','客製分離把手：碳纖維桿 + CNC 鋁製夾具 + Koso 握把','碳纖維水箱護網 + 後輪整流側蓋','客製排氣管（鋁合金 + 碳纖維），3D 列印品牌徽章','Frando 來令片 / HRC 煞車油管 / Over 腳踏控'],['Carbon fiber top clamp + Koso gauge integrated cockpit','Custom clip-ons: carbon bars + CNC aluminum mounts + Koso grips','Carbon fiber radiator guard + rear wheel aero side covers','Custom exhaust (aluminum + carbon fiber), 3D-printed brand badge','Frando brake pads / HRC brake lines / Over rearsets'])}],
+        details:['https://i.pinimg.com/736x/f6/af/12/f6af126c68ef7fc38dbbecbbafacecd9.jpg','https://i.pinimg.com/736x/98/f8/36/98f8363a8d14c04a8270e2b8359b3882.jpg','https://i.pinimg.com/736x/f4/f2/20/f4f22014d3f5c684d160655ad50d741f.jpg','https://i.pinimg.com/736x/6a/5c/62/6a5c62aa0a5d2610d22595d2a0ebf911.jpg'],
+        source:'https://www.bikeexif.com/custom-yamaha-r1' },
+      { id:'v1', cat:'show-car', num:'02', catLabel:'SHOW CAR', catK:'show', cover:'https://i.pinimg.com/736x/f8/1b/81/f81b810b41d977110cf17ca8a9223dcd.jpg',
+        title:t('聯合建造計畫 // HONDA CRF VMX','BIKE COOPERATIVE // HONDA CRF VMX'), tags:[['SHOW CAR','show'],['VMX','aero'],[t('協力打造','CO-BUILT'),'stance']],
+        desc:t('由 Alex（車主）× Pit Works Design 協力打造。這次我們稱這個專案為「聯合建造計畫（Bike Cooperative）」——我們提供場地、經驗、工具與資源，讓車主親手參與，共同將這台 2017 Honda CRF 改造成復古 VMX 風格。','Co-built by Alex (owner) × Pit Works Design. We call this the "Bike Cooperative" — we provide the space, experience, tools & resources so the owner participates hands-on, transforming this 2017 Honda CRF into a retro VMX style machine.'),
+        gallery:['https://i.pinimg.com/736x/05/91/24/059124a779596f6dffd906e6981028a6.jpg','https://i.pinimg.com/736x/7d/7f/69/7d7f69ad52c3a73f9b2b5c6826c4ac66.jpg','https://i.pinimg.com/736x/aa/7d/3e/aa7d3ec8dcb0510ebaa8006c47c0ae5e.jpg'],
+        specs:[{h4:t('外觀 // EXTERIOR','EXTERIOR'),items:t(['客製化車頭板（VMX 風格設計）','客製化油箱與椅墊','客製化副車架','客製化側蓋','客製化土除'],['Custom number plate (VMX-style design)','Custom tank & seat','Custom subframe','Custom side covers','Custom fenders'])},{h4:t('性能 // CUSTOM PARTS','PERFORMANCE // CUSTOM PARTS'),items:t(['客製化性能排氣管','艾瑞斯（Aries）ECU 電腦','避震阻尼升級套件'],['Custom performance exhaust','Aries ECU','Suspension damping upgrade kit'])}],
+        details:['https://i.pinimg.com/736x/33/67/b6/3367b6b724436b9277eb3123c2ff0553.jpg','https://i.pinimg.com/736x/b2/ab/55/b2ab557f4525613ac6d6db368494627d.jpg','https://i.pinimg.com/736x/e7/e5/a1/e7e5a1ec3620fa18d8a4ed4f06b73993.jpg','https://i.pinimg.com/736x/c4/c5/df/c4c5dfb0930dd6ea377724cc69826ebb.jpg'],
+        source:'' },
+      { id:'v2', cat:'show-car', num:'03', catLabel:'SHOW CAR', catK:'show', cover:'https://i.pinimg.com/736x/f2/e3/82/f2e382ec21d14089a99975044b7535d7.jpg',
+        title:t('電動 DAX // HONDA DAX 電動改裝','ELECTRIC DAX // HONDA DAX EV CONVERSION'), tags:[['SHOW CAR','show'],['ELECTRIC','parts'],[t('委託案','COMMISSION'),'aero']],
+        desc:t('由客戶委託 × Pit Works Design 完成。以 Honda DAX 迷你小車為原型，將其全面升級為電動驅動。馬達支架以原廠引擎外型為參考原創設計，3D 列印原型後轉鑄鋁量產，讓改裝視覺上完全融入原車比例。','Commissioned build by Pit Works Design. Starting from the Honda DAX mini-bike, fully converted to electric drive. The motor mount is an original design referencing the stock engine profile — 3D-printed prototype then cast in aluminum, blending seamlessly with the original proportions.'),
+        gallery:['https://i.pinimg.com/736x/47/e4/c0/47e4c0cf0de7e59b884eb6a01a2d5d92.jpg','https://i.pinimg.com/736x/5c/27/34/5c273409e1938db20325db46746a1590.jpg','https://i.pinimg.com/736x/2f/42/31/2f42310108094e67023744705362817a.jpg'],
+        specs:[{h4:t('外觀 // EXTERIOR','EXTERIOR'),items:t(['原型車：Honda DAX 迷你型小車','客製化迷彩鯊魚轟炸機主題塗裝','LED 大燈升級','馬達支架外型參考原廠引擎設計，視覺融合度高'],['Base: Honda DAX mini-bike','Custom camo shark-bomber theme livery','LED headlight upgrade','Motor mount styled after OEM engine for visual integration'])},{h4:t('性能 // CUSTOM PARTS','PERFORMANCE // CUSTOM PARTS'),items:t(['馬達支架：3D 列印原型 → 鑄鋁量產製造','電動馬達驅動系統','鋰電池組整合','全車電動化改裝'],['Motor mount: 3D-printed prototype → cast aluminum production','Electric motor drive system','Lithium battery pack integration','Full EV conversion'])}],
+        details:['https://i.pinimg.com/736x/04/1f/3c/041f3caf6fff4cdf5e20dbb0ac8b45f3.jpg','https://i.pinimg.com/736x/6b/93/ba/6b93bab68d6d8e2a05be54c81e061da2.jpg','https://i.pinimg.com/736x/2f/42/31/2f42310108094e67023744705362817a.jpg','https://i.pinimg.com/736x/16/14/5c/16145cd2948fb778ac8e7b5273b3bac3.jpg'],
+        source:'' },
+      { id:'v3', cat:'parts', num:'P1', catLabel:t('PARTS 零件','PARTS'), catK:'parts', cover:'',
+        title:'HYRO // AERO BODY KIT 001', tags:[['PARTS','parts'],['CARBON FIBER','aero']],
+        desc:'', gallery:['FRONT LIP','SIDE SKIRT','REAR WING'],
+        specs:[], details:['TEXTURE','FIT CHECK','WEAVE DETAIL','FINISH'], source:'' },
+    ];
+  }
+
+  renderVals() {
+    const t = this.t.bind(this);
+    const { filter, open } = this.state;
+    const all = this.vehicles;
+    const counts = { all: all.length, 'show-car': all.filter(v=>v.cat==='show-car').length, parts: all.filter(v=>v.cat==='parts').length };
+    const defs = [ {key:'all',label:'ALL'}, {key:'show-car',label:'SHOW CAR'}, {key:'parts',label:t('PARTS 零件','PARTS')} ];
+    const btnBase = "background:#fff;border:1px solid #e2e2df;color:#8a8a8a;padding:6px 18px;border-radius:30px;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;";
+    const filters = defs.map(d => {
+      const active = filter === d.key;
+      const style = active ? btnBase + 'background:#141414;color:#fff;border-color:#141414;' : btnBase;
+      const cntStyle = 'display:inline-block;font-size:.52rem;padding:1px 6px;border-radius:10px;margin-left:6px;' + (active ? 'background:rgba(255,255,255,.2);color:#fff;' : 'background:#eeeeeb;color:#8a8a8a;');
+      return { label:d.label, count:counts[d.key], style, cntStyle, onClick:()=>this.setState({filter:d.key}) };
+    });
+    const visibleVehicles = all.filter(v => filter==='all' || v.cat===filter).map(v => {
+      const isOpen = !!open[v.id];
+      let coverStyle = "position:relative;height:300px;background:#0a0a0a;overflow:hidden;cursor:pointer;user-select:none;";
+      if (v.cover) coverStyle += "background-image:linear-gradient(to top,rgba(0,0,0,.2),transparent 60%),url('"+v.cover+"');background-size:cover;background-position:center;";
+      let catStyle = "position:absolute;top:20px;left:24px;font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;border-radius:4px;padding:4px 10px;background:rgba(0,0,0,.5);z-index:3;";
+      catStyle += v.catK==='show' ? 'color:#ff6b6b;border:1px solid rgba(255,59,59,.5);' : 'color:#4aa3e8;border:1px solid rgba(3,119,212,.5);';
+      const cardStyle = "background:#fff;border:1px solid "+(isOpen?'#cfcfcc':'#e8e8e5')+";border-radius:16px;overflow:hidden;transition:border-color .25s,box-shadow .25s;box-shadow:"+(isOpen?'0 6px 22px rgba(2,87,154,.1)':'0 1px 3px rgba(0,0,0,.04)')+";";
+      const toggleStyle = "display:flex;align-items:center;gap:9px;background:rgba(255,255,255,"+(isOpen?'.16':'.1')+");border:1px solid rgba(255,255,255,"+(isOpen?'.4':'.28')+");border-radius:8px;padding:9px 15px;cursor:pointer;transition:all .25s;flex-shrink:0;";
+      return { ...v, open:isOpen, hasSpecs:v.specs.length>0, toggleLabel:isOpen?'CLOSE ▲':'DETAILS ▼', cardStyle, coverStyle, catStyle, toggleStyle,
+        tags:v.tags.map(tg=>({label:tg[0],style:this.tagStyle(tg[1])})),
+        gallery:v.gallery.map(g=>this.thumb(g.startsWith&&g.startsWith('http')?g:null,g,'16/10','10px')),
+        details:v.details.map(d=>this.thumb(d.startsWith&&d.startsWith('http')?d:null,d,'4/3','8px')),
+        toggle:()=>this.setState(s=>({open:{...s.open,[v.id]:!s.open[v.id]}})),
+      };
+    });
+    return {
+      langLabel: this.state.lang === 'zh' ? 'EN' : '中文',
+      toggleLang: () => { const n = window.__pitLang.toggle(); this.setState({ lang: n }); },
+      headerDesc: t('實體化賽博美學的極致展現。瀏覽我們參與研發、改裝與設計的核心車輛作品庫。','The ultimate expression of materialized cyber aesthetics. Browse our core vehicle portfolio — R&D, custom builds & design.'),
+      sourceLabel: t('原文來源 BIKE EXIF','Source: BIKE EXIF'),
+      filters, visibleVehicles,
+    };
+  }
+}
+</script>
+</body>
+</html>
