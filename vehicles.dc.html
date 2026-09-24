@@ -27,6 +27,20 @@
     .rwd-3{grid-template-columns:1fr !important;}
     .rwd-2{grid-template-columns:1fr !important;}
   }
+  .nav-toggle{display:none;}
+  .nav-links{display:flex;}
+  @media (max-width:860px){
+    .nav-toggle{display:flex !important;}
+    .nav-links{
+      display:none;
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column !important;align-items:stretch !important;
+      background:#fff;border-bottom:1px solid #e8e8e5;
+      padding:10px 16px 16px;gap:8px !important;
+      box-shadow:0 12px 24px rgba(0,0,0,.08);
+    }
+    .nav-links.open{display:flex;}
+  }
 </style>
 </helmet>
 
@@ -35,7 +49,7 @@
     <span style="width:9px;height:9px;border-radius:2px;background:#ff3b3b;display:inline-block;"></span>
     <span style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.14em;color:#141414;">PITWORKS</span>
   </a>
-  <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+  <div class="nav-links{{ navOpenClass }}" style="gap:4px;align-items:center;flex-wrap:wrap;">
     <a href="index.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">HOME</a>
     <a href="ip.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">IP FIGURES</a>
     <a href="vehicles.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#02579a;text-decoration:none;padding:8px 14px;border-radius:6px;background:rgba(3,119,212,.1);border:1px solid rgba(3,119,212,.35);">VEHICLES</a>
@@ -43,6 +57,7 @@
     <a href="contact.dc.html" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6c7478;text-decoration:none;padding:8px 14px;border-radius:6px;border:1px solid transparent;transition:color .25s,border-color .25s;" style-hover="color:#141414;border-color:#e8e8e5;">CONTACT</a>
     <button onClick="{{ toggleLang }}" style="font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.08em;color:#141414;padding:8px 14px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;transition:all .25s;margin-left:4px;" style-hover="background:#141414;color:#fff;border-color:#141414;">{{ langLabel }}</button>
   </div>
+  <button class="nav-toggle" onClick="{{ toggleNav }}" aria-label="Menu" style="align-items:center;justify-content:center;width:38px;height:38px;border-radius:6px;border:1px solid #e8e8e5;background:#f6f6f3;cursor:pointer;font-size:1.05rem;line-height:1;color:#141414;">{{ navToggleIcon }}</button>
 </nav>
 
 <div style="max-width:1320px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:24px;">
@@ -140,7 +155,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'zh', filter: 'all', open: { 'v0': true } };
+  state = { lang: 'zh', filter: 'all', open: { 'v0': true }, navOpen: false };
   componentDidMount() { this.setState({ lang: window.__pitLang ? window.__pitLang.get() : 'zh' }); }
   t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
 
@@ -220,6 +235,9 @@ class Component extends DCLogic {
     return {
       langLabel: this.state.lang === 'zh' ? 'EN' : '中文',
       toggleLang: () => { const n = window.__pitLang.toggle(); this.setState({ lang: n }); },
+      navOpenClass: this.state.navOpen ? ' open' : '',
+      navToggleIcon: this.state.navOpen ? '✕' : '☰',
+      toggleNav: () => this.setState(s => ({ navOpen: !s.navOpen })),
       headerDesc: t('實體化賽博美學的極致展現。瀏覽我們參與研發、改裝與設計的核心車輛作品庫。','The ultimate expression of materialized cyber aesthetics. Browse our core vehicle portfolio — R&D, custom builds & design.'),
       sourceLabel: t('原文來源 BIKE EXIF','Source: BIKE EXIF'),
       filters, visibleVehicles,
