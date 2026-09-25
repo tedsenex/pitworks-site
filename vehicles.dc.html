@@ -67,11 +67,11 @@
     <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:.03em;line-height:1;position:relative;z-index:1;margin-bottom:14px;color:#141414;">PROJECT VEHICLES</h1>
     <p style="font-size:.8rem;color:#666;max-width:520px;position:relative;z-index:1;letter-spacing:.03em;">{{ headerDesc }}</p>
     <div style="display:flex;gap:32px;margin-top:28px;position:relative;z-index:1;">
-      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">4</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Total Builds</span></div>
+      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">3</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Total Builds</span></div>
       <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
       <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">3</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Show Cars</span></div>
       <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
-      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">1</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Parts Series</span></div>
+      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">0</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Parts Series</span></div>
     </div>
   </header>
 
@@ -207,7 +207,7 @@ class Component extends DCLogic {
   renderVals() {
     const t = this.t.bind(this);
     const { filter, open } = this.state;
-    const all = this.vehicles;
+    const all = this.vehicles.filter(v => v.id !== 'v3'); // v3 (PARTS) temporarily hidden
     const counts = { all: all.length, 'show-car': all.filter(v=>v.cat==='show-car').length, parts: all.filter(v=>v.cat==='parts').length };
     const defs = [ {key:'all',label:'ALL'}, {key:'show-car',label:'SHOW CAR'}, {key:'parts',label:t('PARTS 零件','PARTS')} ];
     const btnBase = "background:#fff;border:1px solid #e2e2df;color:#8a8a8a;padding:6px 18px;border-radius:30px;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;";
