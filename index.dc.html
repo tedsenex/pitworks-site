@@ -79,6 +79,7 @@
         </div>
         <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,4vw,3.6rem);line-height:1.05;text-transform:uppercase;font-weight:900;letter-spacing:.04em;color:#fff;position:relative;">PITWORKS<br>DESIGN</h1>
         <p style="font-family:'DM Mono',monospace;font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.7;margin-top:20px;max-width:340px;">{{ heroSub }}</p>
+        <p style="font-family:'DM Mono',monospace;font-size:.82rem;font-style:italic;color:rgba(255,255,255,.5);line-height:1.6;margin-top:10px;max-width:340px;">{{ heroQuote }}</p>
       </div>
       <div style="margin-top:36px;">
         <div style="display:flex;justify-content:space-between;font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.12em;color:rgba(255,255,255,.55);margin-bottom:6px;"><span>SYSTEM FULLY LOADED</span><span>100%</span></div>
@@ -201,6 +202,7 @@ class Component extends DCLogic {
       navToggleIcon: this.state.navOpen ? '✕' : '☰',
       toggleNav: () => this.setState(s => ({ navOpen: !s.navOpen })),
       heroSub: t('改裝 x 老車 x 玩具 x 生活', 'Custom × Vintage × Toys × Life'),
+      heroQuote: t('只要帥的、好玩的，我全都要！— Ted Lee', 'As long as it\'s cool and fun — I want it all! — Ted Lee'),
       card1Label: t('原創IP × 潮流玩具', 'Original IP × Designer Toys'),
       card1Desc: t('— PITMAN', '— PITMAN'),
       card2Label: t('車輛改裝專案', 'Vehicle Custom Projects'),
