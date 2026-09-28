@@ -71,8 +71,6 @@
       <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">3</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Total Builds</span></div>
       <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
       <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">3</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Show Cars</span></div>
-      <div style="width:1px;background:#e8e8e5;align-self:stretch;"></div>
-      <div><span style="font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;display:block;line-height:1;color:#141414;">0</span><span style="font-size:.58rem;color:#8a8a8a;text-transform:uppercase;letter-spacing:.15em;">Parts Series</span></div>
     </div>
   </header>
 
@@ -198,19 +196,15 @@ class Component extends DCLogic {
         specs:[{h4:t('外觀 // EXTERIOR','EXTERIOR'),items:t(['原型車：Honda DAX 迷你型小車','客製化迷彩鯊魚轟炸機主題塗裝','LED 大燈升級','馬達支架外型參考原廠引擎設計，視覺融合度高'],['Base: Honda DAX mini-bike','Custom camo shark-bomber theme livery','LED headlight upgrade','Motor mount styled after OEM engine for visual integration'])},{h4:t('性能 // CUSTOM PARTS','PERFORMANCE // CUSTOM PARTS'),items:t(['馬達支架：3D 列印原型 → 鑄鋁量產製造','電動馬達驅動系統','鋰電池組整合','全車電動化改裝'],['Motor mount: 3D-printed prototype → cast aluminum production','Electric motor drive system','Lithium battery pack integration','Full EV conversion'])}],
         details:['https://i.pinimg.com/736x/04/1f/3c/041f3caf6fff4cdf5e20dbb0ac8b45f3.jpg','https://i.pinimg.com/736x/6b/93/ba/6b93bab68d6d8e2a05be54c81e061da2.jpg','https://i.pinimg.com/736x/2f/42/31/2f42310108094e67023744705362817a.jpg','https://i.pinimg.com/736x/16/14/5c/16145cd2948fb778ac8e7b5273b3bac3.jpg'],
         source:'' },
-      { id:'v3', cat:'parts', num:'P1', catLabel:t('PARTS 零件','PARTS'), catK:'parts', cover:'',
-        title:'HYRO // AERO BODY KIT 001', tags:[['PARTS','parts'],['CARBON FIBER','aero']],
-        desc:'', gallery:['FRONT LIP','SIDE SKIRT','REAR WING'],
-        specs:[], details:['TEXTURE','FIT CHECK','WEAVE DETAIL','FINISH'], source:'' },
     ];
   }
 
   renderVals() {
     const t = this.t.bind(this);
     const { filter, open } = this.state;
-    const all = this.vehicles.filter(v => v.id !== 'v3'); // v3 (PARTS) temporarily hidden
-    const counts = { all: all.length, 'show-car': all.filter(v=>v.cat==='show-car').length, parts: all.filter(v=>v.cat==='parts').length };
-    const defs = [ {key:'all',label:'ALL'}, {key:'show-car',label:'SHOW CAR'}, {key:'parts',label:t('PARTS 零件','PARTS')} ];
+    const all = this.vehicles;
+    const counts = { all: all.length, 'show-car': all.filter(v=>v.cat==='show-car').length };
+    const defs = [ {key:'all',label:'ALL'}, {key:'show-car',label:'SHOW CAR'} ];
     const btnBase = "background:#fff;border:1px solid #e2e2df;color:#8a8a8a;padding:6px 18px;border-radius:30px;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;";
     const filters = defs.map(d => {
       const active = filter === d.key;
