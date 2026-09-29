@@ -80,8 +80,8 @@
     <p style="font-size:.85rem;color:#666;max-width:600px;position:relative;z-index:1;letter-spacing:.03em;line-height:1.8;">{{ headerDesc }}</p>
   </header>
 
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e8e8e5;border-radius:50px;padding:10px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
-    <span style="font-family:'Orbitron',sans-serif;font-size:.58rem;color:#8a8a8a;letter-spacing:.2em;margin-right:4px;white-space:nowrap;">{{ filterLabel }}</span>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#242424;border:1px solid #333;border-radius:50px;padding:10px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+    <span style="font-family:'Orbitron',sans-serif;font-size:.58rem;color:rgba(255,255,255,.5);letter-spacing:.2em;margin-right:4px;white-space:nowrap;">{{ filterLabel }}</span>
     <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
       <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }} <span style="{{ f.cntStyle }}">{{ f.count }}</span></button>
     </sc-for>
@@ -143,11 +143,11 @@ class Component extends DCLogic {
       { key:'exhaust', label:t('排氣管','EXHAUST') },
       { key:'bodykit', label:t('外殼套件','BODY KIT') },
     ];
-    const btnBase = "background:#fff;border:1px solid #e2e2df;color:#8a8a8a;padding:6px 18px;border-radius:30px;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;";
+    const btnBase = "background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55);padding:6px 18px;border-radius:30px;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;";
     const filters = defs.map(d => {
       const active = filter === d.key;
-      const style = active ? btnBase + 'background:#141414;color:#fff;border-color:#141414;' : btnBase;
-      const cntStyle = 'display:inline-block;font-size:.52rem;padding:1px 6px;border-radius:10px;margin-left:6px;' + (active ? 'background:rgba(255,255,255,.2);color:#fff;' : 'background:#eeeeeb;color:#8a8a8a;');
+      const style = active ? btnBase + 'background:#fff;color:#141414;border-color:#fff;' : btnBase;
+      const cntStyle = 'display:inline-block;font-size:.52rem;padding:1px 6px;border-radius:10px;margin-left:6px;' + (active ? 'background:rgba(0,0,0,.1);color:#141414;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);');
       return { label:d.label, count:counts[d.key], style, cntStyle, onClick:()=>this.setState({filter:d.key}) };
     });
     const visibleParts = all.filter(p => filter==='all' || p.cat===filter).map(p => {
