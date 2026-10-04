@@ -105,7 +105,6 @@
     </sc-for>
   </div>
 
-  <div style="align-self:flex-start;font-family:'Orbitron',sans-serif;font-size:.52rem;color:#8a8a8a;letter-spacing:.22em;text-transform:uppercase;border:1px solid #e8e8e5;border-radius:4px;padding:4px 10px;background:#f6f6f3;">{{ sampleTag }}</div>
   <section class="rwd-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
     <sc-for list="{{ visibleParts }}" as="p" hint-placeholder-count="1">
       <div style="background:#fff;border:1px solid #e8e8e5;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);">
@@ -141,13 +140,7 @@ class Component extends DCLogic {
   t(zh, en) { return this.state.lang === 'zh' ? zh : en; }
 
   get parts() {
-    const t = this.t.bind(this);
-    return [
-      { id:'p1', cat:'handlebar', catLabel:t('車把','Handlebar'),
-        title:t('範例零件名稱', 'Sample Part Name'),
-        price:t('NT$ 8,500（含稅）', 'NT$ 8,500 (incl. tax)'),
-        desc:t('這是零件卡片的排版範例，實際內容之後會換成真實產品照片與規格說明。', 'This is a layout example for a parts card — real content will replace this with actual product photos and specs later.') },
-    ];
+    return [];
   }
 
   renderVals() {
@@ -186,7 +179,6 @@ class Component extends DCLogic {
       headerDesc: t('擅長以多元 3D 技術詮釋不同風格，專注材質與紋理表現，為每一台改裝車與載具打造獨一無二的客製零件。', 'Skilled in diverse 3D techniques to explore different styles, with a sharp focus on material and texture — crafting one-of-a-kind custom parts for every build.'),
       filterLabel: t('篩選：','Filter:'),
       filters, visibleParts,
-      sampleTag: t('範例卡片（樣式待確認）', 'Sample Card (Layout Preview)'),
       ctaTag: t('零件項目', 'Parts Catalog'),
       ctaDesc: t('目前零件項目陸續整理上架中，如有客製零件需求，歡迎與我們聯繫。', 'Our parts catalog is being compiled — for custom part inquiries, feel free to reach out.'),
       contactUs: t('聯絡我們', 'Contact Us'),
